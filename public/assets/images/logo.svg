@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Creator: CorelDRAW 2017 -->
+<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="18.7979mm" height="16.0833mm" version="1.1" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+viewBox="0 0 140 120"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+ <defs>
+  <style type="text/css">
+   <![CDATA[
+    .str5 {stroke:#005EFF;stroke-width:1.26229}
+    .str4 {stroke:#029B4C;stroke-width:1.26229}
+    .str2 {stroke:#121C26;stroke-width:1.26229}
+    .str1 {stroke:#6F0098;stroke-width:1.26229}
+    .str3 {stroke:#C00023;stroke-width:1.26229}
+    .str0 {stroke:#FFBD17;stroke-width:1.26229}
+    .fil5 {fill:#005EFF}
+    .fil4 {fill:#029B4C}
+    .fil9 {fill:#0F0C0C}
+    .fil6 {fill:#121C26}
+    .fil1 {fill:#6F0098}
+    .fil3 {fill:#C00023}
+    .fil0 {fill:#FFBD17}
+    .fil2 {fill:#121C26}
+    .fil7 {fill:url(#id0)}
+    .fil8 {fill:url(#id1)}
+   ]]>
+  </style>
+  <linearGradient id="id0" gradientUnits="userSpaceOnUse" x1="70" y1="31" x2="70" y2="92">
+   <stop offset="0" style="stop-opacity:1; stop-color:#2BA71B"/>
+   <stop offset="0.470588" style="stop-opacity:1; stop-color:#268A21"/>
+   <stop offset="1" style="stop-opacity:1; stop-color:#206C28"/>
+  </linearGradient>
+  <linearGradient id="id1" gradientUnits="userSpaceOnUse" x1="78" y1="34" x2="62" y2="86">
+   <stop offset="0" style="stop-opacity:1; stop-color:#2CAC1B"/>
+   <stop offset="1" style="stop-opacity:1; stop-color:#1E612A"/>
+  </linearGradient>
+ </defs>
+ <g id="Layer_x0020_1">
+  <metadata id="CorelCorpID_0Corel-Layer"/>
+  <g id="_1904968243504">
+   <g>
+    <polygon class="fil0 str0" points="73,105 87,101 69,119 34,83 34,80 "/>
+    <polygon class="fil1 str1" points="68,15 54,19 72,1 107,38 107,40 "/>
+    <polygon class="fil2 str2" points="107,35 98,25 122,32 108,81 106,82 "/>
+    <polygon class="fil3 str3" points="110,80 114,67 120,91 71,103 69,102 "/>
+    <polygon class="fil4 str4" points="33,86 43,95 19,89 32,40 34,39 "/>
+    <polygon class="fil5 str5" points="29,42 26,55 19,31 69,17 71,18 "/>
+    <circle class="fil6 str2" transform="matrix(0.171946 0.287496 -0.287496 0.171946 129.479 60.0582)" r="30"/>
+    <circle class="fil3 str3" transform="matrix(-0.149958 0.299553 -0.299553 -0.149958 101.561 109.24)" r="30"/>
+    <circle class="fil0 str0" transform="matrix(-0.334991 -0.000561359 0.000561359 -0.334991 39.6641 109.162)" r="30"/>
+    <circle class="fil4 str4" transform="matrix(-0.176265 -0.284868 0.284868 -0.176265 10.6768 60.0581)" r="30"/>
+    <circle class="fil5 str5" transform="matrix(0.142335 -0.303249 0.303249 0.142335 37.3458 10.7865)" r="30"/>
+    <circle class="fil1 str1" transform="matrix(0.334918 0.00701389 -0.00701389 0.334918 101.455 10.6732)" r="30"/>
+   </g>
+   <path class="fil7" d="M70 28l32 32 -32 32 -32 -32 32 -32zm0 3l29 29 -29 29 -29 -29 29 -29z"/>
+   <polygon class="fil8" points="70,32 98,60 70,87 43,60 "/>
+   <g>
+    <path class="fil9" d="M67 60c-1,0 0,1 -1,1 -1,0 -1,0 -2,0 -1,0 -2,2 -2,3 1,1 2,0 2,1 -1,1 -8,3 -6,-2 0,-1 0,-1 0,-1 -1,0 -1,3 -1,4 1,1 2,2 4,2l0 1 -1 0 -1 1 1 1 1 -1 1 0 1 -1 -1 -1c1,-1 3,-1 3,-2 0,-1 1,-2 -1,-2 -1,0 -1,0 -1,0 1,-1 2,0 3,-1 0,0 1,0 1,-1 1,1 1,1 2,1 1,0 1,0 1,-1l0 0c1,1 0,1 1,1 1,0 1,0 2,-1 0,1 1,1 2,1 1,0 1,-1 2,-1 1,0 1,1 2,1 1,-1 1,-3 0,-3 -2,0 -2,4 -4,3 0,0 0,0 0,0 0,0 0,0 0,-1 -1,0 0,1 -2,1 -2,0 -1,-2 -2,-5 0,-1 0,-2 -1,-3 -1,1 1,7 -1,8 -1,1 -2,-1 -2,-1z"/>
+    <path class="fil9" d="M81 62c1,0 1,-3 1,-4l0 -4c0,0 0,0 0,0 0,0 -1,1 -1,2 0,1 0,2 0,2 0,1 0,1 0,2 0,1 0,2 0,2z"/>
+    <path class="fil9" d="M58 52c-1,1 -1,3 1,3 1,0 1,-1 1,-2 0,-1 -1,-1 -2,-1zm0 1c0,0 0,0 0,1 0,0 0,0 0,0 1,0 0,-1 0,-1z"/>
+    <path class="fil9" d="M76 52c-1,1 -1,3 1,3 1,-1 1,-3 -1,-3zm0 1c0,0 0,0 0,1 0,0 0,0 0,0 1,0 0,-1 0,-1z"/>
+    <path class="fil9" d="M80 53c0,0 0,0 -1,1 1,0 1,0 2,0 1,0 1,0 1,-1 -1,0 -1,0 -2,0 1,0 0,0 1,0 1,0 0,-1 0,-1 -1,0 -3,1 -2,2z"/>
+    <path class="fil9" d="M73 58c-1,0 0,0 -1,0l-1 1c0,0 1,0 1,1 0,0 0,0 1,-1 0,0 1,0 1,0l1 -1 -1 -1 0 1z"/>
+    <path class="fil9" d="M67 58c-1,0 0,0 -1,-1l-1 1c0,0 1,0 1,1l1 -1c0,0 1,0 1,0l1 -1c0,0 -1,-1 -1,-1l0 1z"/>
+    <path class="fil9" d="M80 52c1,0 1,-1 2,-1 1,0 1,0 1,-2 -1,0 -1,1 -2,1 -1,0 -1,0 -1,2z"/>
+    <path class="fil9" d="M68 52c1,0 1,-1 2,-1 1,0 1,0 1,-2 -1,0 -1,1 -2,1 -1,0 -1,0 -1,2z"/>
+    <path class="fil9" d="M72 71c1,0 1,-1 2,-1 1,0 1,0 1,-2 -1,0 -1,1 -2,1 -1,0 -1,0 -1,2z"/>
+    <path class="fil9" d="M65 71c1,0 1,-1 2,-1 1,0 1,0 1,-1 0,0 -1,1 -2,1 -1,0 -1,1 -1,2z"/>
+    <path class="fil9" d="M72 57l1 1c0,0 0,-1 1,-1 0,0 -1,-1 -1,-1l-1 1z"/>
+   </g>
+  </g>
+ </g>
+</svg>
