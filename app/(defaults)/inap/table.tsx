@@ -256,10 +256,10 @@ const Table = ({ data, kelas, asrama, keluhans }: { data: any; kelas: any; asram
                                                                             isClearable
                                                                             isDisabled={kelasLoading}
                                                                             isLoading={kelasLoading}
-                                                                            onChange={(newValue) => setKelasValue(newValue)}
+                                                                            onChange={(newValue) => field.onChange(newValue.value)}
                                                                             onCreateOption={handleCreateKelas}
                                                                             options={kelasOptions}
-                                                                            value={kelasValue}
+                                                                            value={kelasOptions.find((c: any) => c.value === field.value)}
                                                                         />
                                                                     </div>
                                                                 </FormControl>
@@ -294,10 +294,10 @@ const Table = ({ data, kelas, asrama, keluhans }: { data: any; kelas: any; asram
                                                                             isClearable
                                                                             isDisabled={asramaLoading}
                                                                             isLoading={asramaLoading}
-                                                                            onChange={(newValue) => setAsramaValue(newValue)}
+                                                                            onChange={(newValue) => field.onChange(newValue.value)}
                                                                             onCreateOption={handleCreateAsrama}
                                                                             options={asramaOptions}
-                                                                            value={asramaValue}
+                                                                            value={asramaOptions.find((c: any) => c.value === field.value)}
                                                                         />
                                                                     </div>
                                                                 </FormControl>
