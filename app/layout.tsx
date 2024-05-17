@@ -6,6 +6,7 @@ import { Metadata } from 'next';
 import { Nunito } from 'next/font/google';
 import { auth } from '@/auth';
 import { SessionProvider } from 'next-auth/react';
+import NextTopLoader from 'nextjs-toploader';
 
 export const metadata: Metadata = {
     title: {
@@ -26,6 +27,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <SessionProvider session={session}>
             <html lang="en">
                 <body className={nunito.variable}>
+                    <NextTopLoader showSpinner={false} />
                     <ProviderComponent>{children}</ProviderComponent>
                 </body>
             </html>
