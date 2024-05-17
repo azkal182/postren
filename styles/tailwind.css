@@ -4,6 +4,9 @@
 /* Select2*/
 @import './select.css';
 
+/* Data tables css */
+@import './datatables.css';
+
 /* sweetalert css */
 @import './sweetalert.css';
 

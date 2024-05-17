@@ -32,3 +32,65 @@ enum TypeUser {
     LK
     PR
 }
+
+model Student {
+    id      String   @id
+    name    String
+    address String
+    sex     SexType
+    master  Master[]
+}
+
+enum SexType {
+    LK
+    PR
+    ALL
+}
+
+model Master {
+    id                String              @id @default(uuid())
+    createdAt         DateTime            @default(now())
+    returnAt          DateTime?
+    studentId         String
+    students          Student             @relation(references: [id], fields: [studentId])
+    kelasId           String?
+    kelas             Kelas?              @relation(references: [name], fields: [kelasId])
+    asramaId          String
+    asrama            Asrama              @relation(references: [name], fields: [asramaId])
+    keluhans          Keluhan[]
+    description       String?
+    room              String?
+    returnTo          ReturnTo?
+    KeluhansOnMasters KeluhansOnMasters[]
+}
+
+model KeluhansOnMasters {
+    keluhanId String
+    keluhan   Keluhan @relation(references: [name], fields: [keluhanId])
+    masterId  String
+    master    Master  @relation(references: [id], fields: [masterId])
+
+    @@id([keluhanId, masterId])
+}
+
+model Keluhan {
+    name              String              @id
+    master            Master[]
+    KeluhansOnMasters KeluhansOnMasters[]
+}
+
+enum ReturnTo {
+    RUMAH
+    RS
+    ASRAMA
+}
+
+model Kelas {
+    name   String   @id
+    master Master[]
+}
+
+model Asrama {
+    name   String   @id
+    master Master[]
+}

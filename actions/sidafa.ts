@@ -232,6 +232,7 @@ async function getBalance2(rek: string): Promise<Result> {
 type namesOption = {
     value: string;
     label: string;
+    name: string;
     address: string;
 };
 
@@ -293,7 +294,8 @@ function parseString(inputString: string): namesOption {
     let data: namesOption = {
         address: '',
         value: '',
-        label: ''
+        label: '',
+        name: ''
     };
     const accountNumberPattern = /^([^,]+)/;
     const accountNumberMatch = inputString.match(accountNumberPattern);
@@ -310,7 +312,7 @@ function parseString(inputString: string): namesOption {
     const addressMatch = inputString.match(addressPattern);
 
     data.address = addressMatch ? addressMatch[1] : "";
-
+    data.name = nameMatch ? nameMatch[1] : ""
     data.label = `${nameMatch ? nameMatch[1] : ""} ( ${addressMatch ? addressMatch[1] : ""} )`;
 
     return data;

@@ -24,6 +24,7 @@ type namesOption = {
     value: string;
     label: string;
     address: string;
+    name: string;
 };
 
 export const AutoComplete = () => {
