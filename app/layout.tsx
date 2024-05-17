@@ -9,7 +9,7 @@ import { SessionProvider } from 'next-auth/react';
 
 export const metadata: Metadata = {
     title: {
-        template: '%s |Poskestren Dashboard',
+        template: '%s | Poskestren Dashboard',
         default: 'Poskestren Dashboard',
     },
 };

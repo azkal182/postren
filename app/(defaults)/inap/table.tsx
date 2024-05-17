@@ -16,6 +16,8 @@ import AsyncSelect from 'react-select/async';
 import { createMaster } from '@/actions/master';
 import IconPencil from '@/components/icon/icon-pencil';
 import Tippy from '@tippyjs/react';
+import { createKelas } from '@/actions/kelas';
+import { createAsrama } from '@/actions/asrama';
 
 type formCreateMaster = z.infer<typeof CreateMaster>;
 
@@ -25,10 +27,18 @@ type namesOption = {
     name: string;
     address: string;
 };
+interface Option {
+    readonly label: string;
+    readonly value: string;
+}
 
 const Table = ({ data, kelas, asrama, keluhans }: { data: any; kelas: any; asrama: any; keluhans: any }) => {
     const [modal, setModal] = useState(false);
     const [selectedValue, setSelectedValue] = useState<namesOption | null | undefined>(null);
+    const [kelasLoading, setKelasLoading] = useState(false);
+    const [asramaLoading, setAsramaLoading] = useState(false);
+    const [kelasValue, setKelasValue] = useState<Option | null>();
+    const [asramaValue, setAsramaValue] = useState<Option | null>();
 
     const form = useForm<formCreateMaster>({
         resolver: zodResolver(CreateMaster),
@@ -74,6 +84,20 @@ const Table = ({ data, kelas, asrama, keluhans }: { data: any; kelas: any; asram
     const keluhanOptions = keluhans.map((value: any) => {
         return { label: value.name, value: value.name };
     });
+
+    const handleCreateKelas = async (inputValue: string) => {
+        setKelasLoading(true);
+        const newOption = await createKelas(inputValue);
+        setKelasLoading(false);
+        setKelasValue({ label: newOption.name, value: newOption.name });
+    };
+
+    const handleCreateAsrama = async (inputValue: string) => {
+        setAsramaLoading(true);
+        const newOption = await createAsrama(inputValue);
+        setAsramaLoading(false);
+        setAsramaValue({ label: newOption.name, value: newOption.name });
+    };
 
     return (
         <>
@@ -216,7 +240,7 @@ const Table = ({ data, kelas, asrama, keluhans }: { data: any; kelas: any; asram
                                                                 <FormControl className="">
                                                                     {/* <input {...field} type="text" placeholder="Kelas" className={`form-input w-full text-base`} /> */}
                                                                     <div className="custom-select">
-                                                                        <Select
+                                                                        {/* <Select
                                                                             {...field}
                                                                             classNamePrefix="addl-class"
                                                                             options={kelasOptions}
@@ -226,6 +250,16 @@ const Table = ({ data, kelas, asrama, keluhans }: { data: any; kelas: any; asram
                                                                                 field.onChange(val?.value);
                                                                             }}
                                                                             isClearable
+                                                                        /> */}
+                                                                        <CreatableSelect
+                                                                            {...field}
+                                                                            isClearable
+                                                                            isDisabled={kelasLoading}
+                                                                            isLoading={kelasLoading}
+                                                                            onChange={(newValue) => setKelasValue(newValue)}
+                                                                            onCreateOption={handleCreateKelas}
+                                                                            options={kelasOptions}
+                                                                            value={kelasValue}
                                                                         />
                                                                     </div>
                                                                 </FormControl>
@@ -245,7 +279,7 @@ const Table = ({ data, kelas, asrama, keluhans }: { data: any; kelas: any; asram
                                                                 <FormControl className="">
                                                                     {/* <input {...field} type="text" placeholder="Asrama" className={`form-input w-full text-base`} /> */}
                                                                     <div className="custom-select">
-                                                                        <CreatableSelect
+                                                                        {/* <CreatableSelect
                                                                             {...field}
                                                                             classNamePrefix="addl-class"
                                                                             options={asramaOptions}
@@ -253,6 +287,17 @@ const Table = ({ data, kelas, asrama, keluhans }: { data: any; kelas: any; asram
                                                                             onChange={(val) => {
                                                                                 field.onChange(val.value);
                                                                             }}
+                                                                        /> */}
+
+                                                                        <CreatableSelect
+                                                                            {...field}
+                                                                            isClearable
+                                                                            isDisabled={asramaLoading}
+                                                                            isLoading={asramaLoading}
+                                                                            onChange={(newValue) => setAsramaValue(newValue)}
+                                                                            onCreateOption={handleCreateAsrama}
+                                                                            options={asramaOptions}
+                                                                            value={asramaValue}
                                                                         />
                                                                     </div>
                                                                 </FormControl>
