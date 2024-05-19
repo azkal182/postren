@@ -33,6 +33,8 @@ import IconMenuAuthentication from '@/components/icon/menu/icon-menu-authenticat
 import IconMenuDocumentation from '@/components/icon/menu/icon-menu-documentation';
 import { usePathname } from 'next/navigation';
 import { getTranslation } from '@/i18n';
+import IconUsers from '../icon/icon-users';
+import { useCurrentUser } from '@/hooks/use-current-user';
 
 const Sidebar = () => {
     const dispatch = useDispatch();
@@ -47,6 +49,7 @@ const Sidebar = () => {
             return oldValue === value ? '' : value;
         });
     };
+    const session = useCurrentUser();
 
     useEffect(() => {
         const selector = document.querySelector('.sidebar ul a[href="' + window.location.pathname + '"]');
@@ -173,6 +176,27 @@ const Sidebar = () => {
                                     </li>
                                 </ul>
                             </li>
+                            {session?.role === 'ADMIN' && (
+                                <>
+                                    <h2 className="-mx-4 mb-1 flex items-center bg-white-light/30 px-7 py-3 font-extrabold uppercase dark:bg-dark dark:bg-opacity-[0.08]">
+                                        <IconMinus className="hidden h-5 w-4 flex-none" />
+                                        <span>{t('admin')}</span>
+                                    </h2>
+
+                                    <li className="nav-item">
+                                        <ul>
+                                            <li className="nav-item">
+                                                <Link href="/users" className="group">
+                                                    <div className="flex items-center">
+                                                        <IconUsers className="shrink-0 group-hover:!text-primary" />
+                                                        <span className="text-black dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">{t('users')}</span>
+                                                    </div>
+                                                </Link>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </>
+                            )}
                         </ul>
                     </PerfectScrollbar>
                 </div>

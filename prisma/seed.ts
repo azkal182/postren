@@ -28,6 +28,24 @@ async function main() {
         },
     })
 
+    const keluhans = await prisma.keluhan.createMany({
+        data: [
+            { name: "BATUK" },
+            { name: "FLU" },
+            { name: "DEMAM" },
+            { name: "MATA" },
+            { name: "GONDOKAN" },
+            { name: "GATAL" },
+            { name: "AMANDEL" },
+            { name: "DIARE" },
+            { name: "MAG" },
+            { name: "TIPES" },
+            { name: "DBD" },
+            { name: "RADANG" },
+            { name: "PATAH TULANG" }
+        ]
+    })
+
     console.log({ admin, uks })
 }
 main()

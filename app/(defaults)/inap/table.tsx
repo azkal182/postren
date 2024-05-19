@@ -18,6 +18,8 @@ import IconPencil from '@/components/icon/icon-pencil';
 import Tippy from '@tippyjs/react';
 import { createKelas } from '@/actions/kelas';
 import { createAsrama } from '@/actions/asrama';
+import { useOptimistic } from 'react';
+import Swal from 'sweetalert2';
 
 type formCreateMaster = z.infer<typeof CreateMaster>;
 
@@ -39,6 +41,9 @@ const Table = ({ data, kelas, asrama, keluhans }: { data: any; kelas: any; asram
     const [asramaLoading, setAsramaLoading] = useState(false);
     const [kelasValue, setKelasValue] = useState<Option | null>();
     const [asramaValue, setAsramaValue] = useState<Option | null>();
+    const [optimisticDatas, addOptimisticData] = useOptimistic(data, (state, newDatas) => {
+        return [...state, newDatas];
+    });
 
     const form = useForm<formCreateMaster>({
         resolver: zodResolver(CreateMaster),
@@ -55,9 +60,24 @@ const Table = ({ data, kelas, asrama, keluhans }: { data: any; kelas: any; asram
         });
 
     const onSubmit = async (values: formCreateMaster) => {
+        addOptimisticData({ ...values, createdAt: Date.now() });
+        setModal(false);
         createMaster(values).then((val) => {
             if (val.success) {
-                setModal(false);
+                const toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    showCloseButton: true,
+                    customClass: {
+                        popup: `color-success`,
+                    },
+                });
+                toast.fire({
+                    title: 'Data Berhasil ditambahkan!',
+                });
+
                 form.reset();
             } else {
                 alert('Something went wrong!');
@@ -127,7 +147,7 @@ const Table = ({ data, kelas, asrama, keluhans }: { data: any; kelas: any; asram
                         </tr>
                     </thead>
                     <tbody>
-                        {data.map((item: any, i: number) => (
+                        {optimisticDatas.map((item: any, i: number) => (
                             <tr key={item.id}>
                                 <td>{i + 1}</td>
                                 <td>{dateFormat(item.createdAt)}</td>
