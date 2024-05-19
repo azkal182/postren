@@ -1,17 +1,20 @@
 import { Metadata } from 'next';
 import React from 'react';
-import { auth } from '@/auth';
 import Dropdown from '@/components/dropdown';
 import IconHorizontalDots from '@/components/icon/icon-horizontal-dots';
 import IconEye from '@/components/icon/icon-eye';
+import { db } from '@/lib/db';
 
 export const metadata: Metadata = {
     title: 'Dashboard',
 };
 
 async function page() {
-    const session = await auth();
-    // console.log(session);
+    const masterCount = await db.master.count({
+        where: {
+            returnAt: null,
+        },
+    });
 
     return (
         <div>
@@ -33,7 +36,7 @@ async function page() {
                         </div>
                     </div>
                     <div className="mt-5 flex items-center">
-                        <div className="text-3xl font-bold ltr:mr-3 rtl:ml-3"> 16 </div>
+                        <div className="text-3xl font-bold ltr:mr-3 rtl:ml-3"> {masterCount} </div>
                         <div className="badge bg-white/30">+ 2.35% </div>
                     </div>
                     <div className="mt-5 flex items-center font-semibold">

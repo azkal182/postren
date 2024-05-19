@@ -78,12 +78,14 @@ const createMaster = async (values: FormTypeCreateMaster) => {
                 }
             }
         })
-        revalidatePath('inap')
+
         return { success: 'success' };
     } catch (error) {
         console.log(error);
         return { error: 'Something went wrong!' };
 
+    } finally {
+        revalidatePath('inap')
     }
 }
 

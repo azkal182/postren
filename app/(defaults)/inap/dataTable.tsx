@@ -1,6 +1,7 @@
 'use client';
 import { DataTable } from 'mantine-datatable';
 import { useEffect, useState } from 'react';
+
 const rowData = [
     {
         id: 1,
@@ -510,6 +511,7 @@ const ComponentsDatatablesBasic = () => {
     const [pageSize, setPageSize] = useState(PAGE_SIZES[0]);
     const initialRecords = rowData.slice(0, pageSize);
     const [recordsData, setRecordsData] = useState(initialRecords);
+    
 
     useEffect(() => {
         setPage(1);
