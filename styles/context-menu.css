@@ -1,0 +1,11 @@
+.contextmenu {
+    /* @apply  bg-white text-black dark:bg-dark dark:text-white !important; */
+    @apply my-1 w-[120px] rounded bg-white p-0 py-2 text-black shadow dark:bg-[#1b2e4b] dark:text-white-dark !important;
+}
+.contextmenu > .submenu > .submenu__item {
+    @apply my-1 min-w-[120px] rounded bg-white p-0 py-2 text-black shadow dark:bg-[#1b2e4b] dark:text-white-dark !important;
+}
+
+.contextmenu__item {
+    @apply flex border-none items-center px-4 py-2 hover:bg-primary/10 hover:text-primary !important;
+}

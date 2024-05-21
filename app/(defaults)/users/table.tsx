@@ -5,6 +5,10 @@ import { Prisma } from '@prisma/client';
 import React, { useState } from 'react';
 import UserFormDialog from './user-form-dialog';
 import Dropdown from '@/components/dropdown';
+import { ContextMenu, ContextMenuItem, ContextMenuTrigger } from 'rctx-contextmenu';
+import Swal from 'sweetalert2';
+import { deleteUserAction } from '@/actions/user';
+import ChangePasswordDialog from './change-password-dialog';
 
 interface TableUserProp {
     users: Prisma.UserSelect[];
@@ -12,7 +16,9 @@ interface TableUserProp {
 
 const TableUser = ({ users }: { users: any }) => {
     const [dialog, setDialog] = useState(false);
+    const [changePassdDialog, setChangePassDialog] = useState(false);
     const [user, setUser] = useState<Prisma.UserSelect | null>(null);
+    const [userId, setUserId] = useState<any>('');
     const handleClose = () => {
         setDialog(false);
         setUser(null);
@@ -21,6 +27,31 @@ const TableUser = ({ users }: { users: any }) => {
     const handleEdit = (user: Prisma.UserSelect) => {
         setUser(user);
         setDialog(true);
+    };
+
+    const confirmDelete = async (user: Prisma.UserSelect) => {
+        Swal.fire({
+            icon: 'warning',
+            title: `Are you sure want to delete ${user.name}?`,
+            text: `You won't be able to revert this!`,
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'No, cancel!',
+            padding: '2em',
+            customClass: 'sweet-alerts',
+            reverseButtons: true,
+        }).then((result) => {
+            if (result.value && user?.id) {
+                // @ts-ignore
+                deleteUserAction(user.id).then((data) => {
+                    if (data.success) {
+                        Swal.fire({ title: 'Deleted!', text: 'user has been deleted.', icon: 'success', customClass: 'sweet-alerts' });
+                    } else {
+                        Swal.fire({ title: 'Error!', text: 'Something went wrong!.', icon: 'error', customClass: 'sweet-alerts' });
+                    }
+                });
+            }
+        });
     };
     return (
         <div className="panel z-10 mt-2">
@@ -39,7 +70,7 @@ const TableUser = ({ users }: { users: any }) => {
                             <th>Username</th>
                             <th>Role</th>
                             <th>Type</th>
-                            <th className="w-8"></th>
+                            <th className="w-14">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -77,15 +108,30 @@ const TableUser = ({ users }: { users: any }) => {
                                             </ul>
                                         </Dropdown>
                                     </div> */}
-                                    <button onClick={() => handleEdit(user)} className="btn btn-primary btn-sm">
-                                        Edit
-                                    </button>
+                                    <div className="flex items-center space-x-2">
+                                        <button onClick={() => handleEdit(user)} className="btn btn-primary btn-sm px-1 py-0.5">
+                                            Edit
+                                        </button>
+                                        <button
+                                            onClick={() => {
+                                                setUserId(user);
+                                                setChangePassDialog(true);
+                                            }}
+                                            className="btn btn-warning btn-sm px-1 py-0.5"
+                                        >
+                                            Reset
+                                        </button>
+                                        <button onClick={() => confirmDelete(user)} className="btn btn-danger btn-sm px-1 py-0.5">
+                                            Delete
+                                        </button>
+                                    </div>
                                 </td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
             </div>
+            {userId && <ChangePasswordDialog user={userId} isOpen={changePassdDialog} onClose={() => setChangePassDialog(false)} />}
         </div>
     );
 };

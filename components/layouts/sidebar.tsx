@@ -35,6 +35,7 @@ import { usePathname } from 'next/navigation';
 import { getTranslation } from '@/i18n';
 import IconUsers from '../icon/icon-users';
 import { useCurrentUser } from '@/hooks/use-current-user';
+import IconBookmark from '../icon/icon-bookmark';
 
 const Sidebar = () => {
     const dispatch = useDispatch();
@@ -171,6 +172,15 @@ const Sidebar = () => {
                                             <div className="flex items-center">
                                                 <IconMenuChat className="shrink-0 group-hover:!text-primary" />
                                                 <span className="text-black dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">{t('tabungan')}</span>
+                                            </div>
+                                        </Link>
+                                    </li>
+
+                                    <li className="nav-item">
+                                        <Link href="/report" className="group">
+                                            <div className="flex items-center">
+                                                <IconBookmark className="shrink-0 group-hover:!text-primary" />
+                                                <span className="text-black dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">{t('laporan')}</span>
                                             </div>
                                         </Link>
                                     </li>

@@ -1,6 +1,6 @@
 import React from 'react';
 import Table from './table';
-import { getMaster } from '@/actions/master';
+import { getInap, getMaster } from '@/actions/master';
 import { getAsrama } from '@/actions/asrama';
 import { getKelas } from '@/actions/kelas';
 import { getKeluhans } from '@/actions/keluhan';
@@ -12,7 +12,7 @@ const InapPage = async () => {
     // const kelas = await getKelas();
     // const keluhan = await getKeluhans();
 
-    const [master, asrama, kelas, keluhan] = await Promise.all([getMaster(), getAsrama(), getKelas(), getKeluhans()]);
+    const [master, asrama, kelas, keluhan] = await Promise.all([getInap(), getAsrama(), getKelas(), getKeluhans()]);
 
     console.log(master);
 

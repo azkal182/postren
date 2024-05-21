@@ -13,13 +13,14 @@ import Select from 'react-select';
 import CreatableSelect from 'react-select/creatable';
 import { searchUser } from '@/actions/sidafa';
 import AsyncSelect from 'react-select/async';
-import { createMaster } from '@/actions/master';
+import { createMaster, returnMaster } from '@/actions/master';
 import IconPencil from '@/components/icon/icon-pencil';
 import Tippy from '@tippyjs/react';
 import { createKelas } from '@/actions/kelas';
 import { createAsrama } from '@/actions/asrama';
 import { useOptimistic } from 'react';
 import Swal from 'sweetalert2';
+import { ContextMenu, ContextMenuItem, ContextMenuTrigger, Submenu } from 'rctx-contextmenu';
 
 type formCreateMaster = z.infer<typeof CreateMaster>;
 
@@ -119,6 +120,29 @@ const Table = ({ data, kelas, asrama, keluhans }: { data: any; kelas: any; asram
         setAsramaValue({ label: newOption.name, value: newOption.name });
     };
 
+    const handleReturn = async (user: any, returnTo: any) => {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Are you sure?',
+            text: `${user.name} want to return to ${returnTo}`,
+            showCancelButton: true,
+            confirmButtonText: 'Yes',
+            padding: '2em',
+            reverseButtons: true,
+            customClass: 'sweet-alerts',
+        }).then((result) => {
+            if (result.value) {
+                returnMaster(user.id, returnTo).then((data) => {
+                    if (data.success) {
+                        Swal.fire({ title: 'Returned!', text: 'Successfully!', icon: 'success', customClass: 'sweet-alerts' });
+                    } else {
+                        alert('something went wrong!');
+                    }
+                });
+            }
+        });
+    };
+
     return (
         <>
             {' '}
@@ -151,7 +175,9 @@ const Table = ({ data, kelas, asrama, keluhans }: { data: any; kelas: any; asram
                             <tr key={item.id}>
                                 <td>{i + 1}</td>
                                 <td>{dateFormat(item.createdAt)}</td>
-                                <td>{item.name}</td>
+                                <td>
+                                    <ContextMenuTrigger id={`menu-${item.id}`}>{item.name}</ContextMenuTrigger>
+                                </td>
                                 <td>{item.address.split(',')[0]}</td>
                                 <td>{item.asramaId}</td>
                                 <td>{item.kelasId}</td>
@@ -169,6 +195,17 @@ const Table = ({ data, kelas, asrama, keluhans }: { data: any; kelas: any; asram
                         ))}
                     </tbody>
                 </table>
+                {optimisticDatas.map((user: any) => (
+                    <ContextMenu id={`menu-${user.id}`} key={user.id}>
+                        <Submenu title="Keluar Ke">
+                            <ContextMenuItem onClick={() => handleReturn(user, 'ASRAMA')}>Asrama</ContextMenuItem>
+                            <ContextMenuItem onClick={() => handleReturn(user, 'RS')}>RS</ContextMenuItem>
+                            <ContextMenuItem onClick={() => handleReturn(user, 'RUMAH')}>Rumah</ContextMenuItem>
+                        </Submenu>
+                        <ContextMenuItem>Play</ContextMenuItem>
+                        <ContextMenuItem>Send to {name}</ContextMenuItem>
+                    </ContextMenu>
+                ))}
             </div>
             {/* modal  */}
             <Transition appear show={modal} as={Fragment}>

@@ -62,3 +62,17 @@ export const CreateMaster = z.object({
     room: z.string(),
     keluhans: z.string().array(),
 })
+
+export const ChangePasswordSchema = z.object({
+    id: z.string(),
+    password: z.string().min(3),
+    c_password: z.string().min(3)
+}).refine((data) => data.password === data.c_password, {
+    path: ['c_password'],
+    message: 'Passwords does not match',
+});
+
+export const ReturnMasterSchema = z.object({
+    id: z.string(),
+    returnTo: z.enum(["ASRAMA", "RS", "RUMAH"])
+})
