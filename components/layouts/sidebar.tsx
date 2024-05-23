@@ -36,6 +36,8 @@ import { getTranslation } from '@/i18n';
 import IconUsers from '../icon/icon-users';
 import { useCurrentUser } from '@/hooks/use-current-user';
 import IconBookmark from '../icon/icon-bookmark';
+import IconDollarSign from '../icon/icon-dollar-sign';
+import IconHeart from '../icon/icon-heart';
 
 const Sidebar = () => {
     const dispatch = useDispatch();
@@ -161,8 +163,8 @@ const Sidebar = () => {
                                     <li className="nav-item">
                                         <Link href="/inap" className="group">
                                             <div className="flex items-center">
-                                                <IconMenuChat className="shrink-0 group-hover:!text-primary" />
-                                                <span className="text-black dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">{t('data santri')}</span>
+                                                <IconHeart className="shrink-0 group-hover:!text-primary" />
+                                                <span className="text-black dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">{t('student data')}</span>
                                             </div>
                                         </Link>
                                     </li>
@@ -170,8 +172,8 @@ const Sidebar = () => {
                                     <li className="nav-item">
                                         <Link href="/tabungan" className="group">
                                             <div className="flex items-center">
-                                                <IconMenuChat className="shrink-0 group-hover:!text-primary" />
-                                                <span className="text-black dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">{t('tabungan')}</span>
+                                                <IconDollarSign className="shrink-0 group-hover:!text-primary" />
+                                                <span className="text-black dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">{t('saving')}</span>
                                             </div>
                                         </Link>
                                     </li>
@@ -180,7 +182,7 @@ const Sidebar = () => {
                                         <Link href="/report" className="group">
                                             <div className="flex items-center">
                                                 <IconBookmark className="shrink-0 group-hover:!text-primary" />
-                                                <span className="text-black dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">{t('laporan')}</span>
+                                                <span className="text-black dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">{t('report')}</span>
                                             </div>
                                         </Link>
                                     </li>

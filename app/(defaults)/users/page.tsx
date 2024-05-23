@@ -2,6 +2,11 @@ import { auth } from '@/auth';
 import { db } from '@/lib/db';
 import React from 'react';
 import TableUser from './table';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+    title: 'Users',
+};
 
 const UsersPage = async () => {
     const session = await auth();
@@ -15,7 +20,7 @@ const UsersPage = async () => {
 
     return (
         <>
-            <h1 className="text-center text-xl font-bold">UsersPage</h1>
+            <h1 className="text-center text-xl font-bold">Users</h1>
             <TableUser users={users} />
         </>
     );

@@ -9,6 +9,7 @@ import { ContextMenu, ContextMenuItem, ContextMenuTrigger } from 'rctx-contextme
 import Swal from 'sweetalert2';
 import { deleteUserAction } from '@/actions/user';
 import ChangePasswordDialog from './change-password-dialog';
+import { getTranslation } from '@/i18n';
 
 interface TableUserProp {
     users: Prisma.UserSelect[];
@@ -19,6 +20,7 @@ const TableUser = ({ users }: { users: any }) => {
     const [changePassdDialog, setChangePassDialog] = useState(false);
     const [user, setUser] = useState<Prisma.UserSelect | null>(null);
     const [userId, setUserId] = useState<any>('');
+    const { t } = getTranslation();
     const handleClose = () => {
         setDialog(false);
         setUser(null);
@@ -57,7 +59,7 @@ const TableUser = ({ users }: { users: any }) => {
         <div className="panel z-10 mt-2">
             <div>
                 <button onClick={() => setDialog(true)} className="btn btn-primary">
-                    Add User
+                    {t('add user')}
                 </button>
                 <UserFormDialog user={user} isOpen={dialog} onClose={handleClose} />
             </div>

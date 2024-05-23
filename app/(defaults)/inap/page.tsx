@@ -4,7 +4,7 @@ import { getInap, getMaster } from '@/actions/master';
 import { getAsrama } from '@/actions/asrama';
 import { getKelas } from '@/actions/kelas';
 import { getKeluhans } from '@/actions/keluhan';
-
+import SwipeableListPage from './swipeable-list';
 const InapPage = async () => {
     // Primises.all();
     // const master = await getMaster();
@@ -19,9 +19,10 @@ const InapPage = async () => {
     return (
         <div>
             <h1 className="text-center text-lg font-bold">DATA SANTRI</h1>
-            <div className="panel mt-4">
-                <Table data={master} asrama={asrama} kelas={kelas} keluhans={keluhan} />
-            </div>
+            {/* <div className="panel mt-4"> */}
+            <Table data={master} asrama={asrama} kelas={kelas} keluhans={keluhan} />
+            {/* </div> */}
+            {/* <SwipeableListPage data={master} asrama={asrama} kelas={kelas} keluhans={keluhan} /> */}
         </div>
     );
 };

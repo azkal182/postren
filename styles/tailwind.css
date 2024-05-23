@@ -700,3 +700,30 @@ img.dark-img {
 .dark img.dark-img {
     @apply !block;
 }
+
+
+/* swipeable list */
+.swipeable-list {
+    @apply space-y-2;
+}
+
+.swipeable-list-item__content {
+    @apply bg-white shadow overflow-hidden;
+}
+
+.swipeable-list-item__trailing-actions {
+    @apply flex items-center justify-center bg-green-700 text-white;
+}
+
+.swipeable-list-item__leading-actions {
+    @apply flex items-center justify-center bg-green-700 text-white;
+}
+
+.swipe-action__trailing {
+    @apply ml-2;
+}
+
+.swipe-action__leading {
+    @apply mr-2;
+}
+/* end swipeable list */

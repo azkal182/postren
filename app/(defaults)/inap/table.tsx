@@ -21,6 +21,8 @@ import { createAsrama } from '@/actions/asrama';
 import { useOptimistic } from 'react';
 import Swal from 'sweetalert2';
 import { ContextMenu, ContextMenuItem, ContextMenuTrigger, Submenu } from 'rctx-contextmenu';
+import useScreenSize from '@/hooks/use-screen-size';
+import SwipeableListPage from './swipeable-list';
 
 type formCreateMaster = z.infer<typeof CreateMaster>;
 
@@ -45,6 +47,17 @@ const Table = ({ data, kelas, asrama, keluhans }: { data: any; kelas: any; asram
     const [optimisticDatas, addOptimisticData] = useOptimistic(data, (state, newDatas) => {
         return [...state, newDatas];
     });
+
+    const { width } = useScreenSize();
+    let screenSize: any = '';
+
+    if (width < 600) {
+        screenSize = 'sm';
+    } else if (width >= 600 && width < 960) {
+        screenSize = 'md';
+    } else {
+        screenSize = 'lg';
+    }
 
     const form = useForm<formCreateMaster>({
         resolver: zodResolver(CreateMaster),
@@ -143,70 +156,78 @@ const Table = ({ data, kelas, asrama, keluhans }: { data: any; kelas: any; asram
         });
     };
 
+    console.log({ screenSize });
+
     return (
         <>
             {' '}
-            <div className="mb-4.5 flex flex-col justify-between gap-5 md:flex-row md:items-center">
-                <div className="flex flex-wrap items-center">
-                    <button className="btn btn-primary" onClick={() => setModal(true)}>
-                        Tambah
-                    </button>
-                </div>
-                <input type="text" className="form-input w-auto" placeholder="Search..." value=""></input>
-            </div>
-            <div className="table-responsive mb-5 mt-6">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Masuk</th>
-                            <th>Name</th>
-                            <th>Address</th>
-                            <th>Asrama</th>
-                            <th>Kelas</th>
-                            <th>Keluhan</th>
-                            <th>Keterangan</th>
-                            <th>Ruangan</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {optimisticDatas.map((item: any, i: number) => (
-                            <tr key={item.id}>
-                                <td>{i + 1}</td>
-                                <td>{dateFormat(item.createdAt)}</td>
-                                <td>
-                                    <ContextMenuTrigger id={`menu-${item.id}`}>{item.name}</ContextMenuTrigger>
-                                </td>
-                                <td>{item.address.split(',')[0]}</td>
-                                <td>{item.asramaId}</td>
-                                <td>{item.kelasId}</td>
-                                <td>{item.keluhans.join(', ')}</td>
-                                <td>{item.description}</td>
-                                <td>{item.room}</td>
-                                <td>
-                                    <Tippy content="Pulang">
-                                        <button type="button" className="btn btn-warning h-8 w-8 rounded-full p-0">
-                                            <IconPencil className="h-4 w-4" />
-                                        </button>
-                                    </Tippy>
-                                </td>
-                            </tr>
+            {screenSize !== 'sm' ? (
+                <div className="panel mt-4">
+                    <div className="mb-4.5 flex flex-col justify-between gap-5 md:flex-row md:items-center">
+                        <div className="flex flex-wrap items-center">
+                            <button className="btn btn-primary" onClick={() => setModal(true)}>
+                                Tambah
+                            </button>
+                        </div>
+                        <input type="text" className="form-input w-auto" placeholder="Search..." value=""></input>
+                    </div>
+                    <div className="table-responsive mb-5 mt-6">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Masuk</th>
+                                    <th>Name</th>
+                                    <th>Address</th>
+                                    <th>Asrama</th>
+                                    <th>Kelas</th>
+                                    <th>Keluhan</th>
+                                    <th>Keterangan</th>
+                                    <th>Ruangan</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {optimisticDatas.map((item: any, i: number) => (
+                                    <tr key={item.id}>
+                                        <td>{i + 1}</td>
+                                        <td>{dateFormat(item.createdAt)}</td>
+                                        <td>
+                                            <ContextMenuTrigger id={`menu-${item.id}`}>{item.name}</ContextMenuTrigger>
+                                        </td>
+                                        <td>{item.address.split(',')[0]}</td>
+                                        <td>{item.asramaId}</td>
+                                        <td>{item.kelasId}</td>
+                                        <td>{item.keluhans.join(', ')}</td>
+                                        <td>{item.description}</td>
+                                        <td>{item.room}</td>
+                                        <td>
+                                            <Tippy content="Pulang">
+                                                <button type="button" className="btn btn-warning h-8 w-8 rounded-full p-0">
+                                                    <IconPencil className="h-4 w-4" />
+                                                </button>
+                                            </Tippy>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                        {optimisticDatas.map((user: any) => (
+                            <ContextMenu id={`menu-${user.id}`} key={user.id}>
+                                <Submenu title="Keluar Ke">
+                                    <ContextMenuItem onClick={() => handleReturn(user, 'ASRAMA')}>Asrama</ContextMenuItem>
+                                    <ContextMenuItem onClick={() => handleReturn(user, 'RS')}>RS</ContextMenuItem>
+                                    <ContextMenuItem onClick={() => handleReturn(user, 'RUMAH')}>Rumah</ContextMenuItem>
+                                </Submenu>
+                                <ContextMenuItem>Play</ContextMenuItem>
+                                <ContextMenuItem>Send to {name}</ContextMenuItem>
+                            </ContextMenu>
                         ))}
-                    </tbody>
-                </table>
-                {optimisticDatas.map((user: any) => (
-                    <ContextMenu id={`menu-${user.id}`} key={user.id}>
-                        <Submenu title="Keluar Ke">
-                            <ContextMenuItem onClick={() => handleReturn(user, 'ASRAMA')}>Asrama</ContextMenuItem>
-                            <ContextMenuItem onClick={() => handleReturn(user, 'RS')}>RS</ContextMenuItem>
-                            <ContextMenuItem onClick={() => handleReturn(user, 'RUMAH')}>Rumah</ContextMenuItem>
-                        </Submenu>
-                        <ContextMenuItem>Play</ContextMenuItem>
-                        <ContextMenuItem>Send to {name}</ContextMenuItem>
-                    </ContextMenu>
-                ))}
-            </div>
+                    </div>
+                </div>
+            ) : (
+                <SwipeableListPage data={data} asrama={asrama} kelas={kelas} keluhans={keluhans} />
+            )}
             {/* modal  */}
             <Transition appear show={modal} as={Fragment}>
                 <Dialog as="div" open={modal} onClose={() => setModal(false)}>
