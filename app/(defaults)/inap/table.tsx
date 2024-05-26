@@ -161,16 +161,16 @@ const Table = ({ data, kelas, asrama, keluhans }: { data: any; kelas: any; asram
     return (
         <>
             {' '}
-            {screenSize !== 'sm' ? (
-                <div className="panel mt-4">
-                    <div className="mb-4.5 flex flex-col justify-between gap-5 md:flex-row md:items-center">
-                        <div className="flex flex-wrap items-center">
-                            <button className="btn btn-primary" onClick={() => setModal(true)}>
-                                Tambah
-                            </button>
-                        </div>
-                        <input type="text" className="form-input w-auto" placeholder="Search..." value=""></input>
+            <div className="panel mt-4">
+                <div className="mb-4.5 flex flex-col justify-between gap-5 md:flex-row md:items-center">
+                    <div className="flex flex-wrap items-center">
+                        <button className="btn btn-primary" onClick={() => setModal(true)}>
+                            Tambah
+                        </button>
                     </div>
+                    <input type="text" className="form-input w-auto" placeholder="Search..." value=""></input>
+                </div>
+                {screenSize !== 'sm' ? (
                     <div className="table-responsive mb-5 mt-6">
                         <table>
                             <thead>
@@ -224,10 +224,10 @@ const Table = ({ data, kelas, asrama, keluhans }: { data: any; kelas: any; asram
                             </ContextMenu>
                         ))}
                     </div>
-                </div>
-            ) : (
-                <SwipeableListPage data={data} asrama={asrama} kelas={kelas} keluhans={keluhans} />
-            )}
+                ) : (
+                    <SwipeableListPage data={data} asrama={asrama} kelas={kelas} keluhans={keluhans} />
+                )}
+            </div>
             {/* modal  */}
             <Transition appear show={modal} as={Fragment}>
                 <Dialog as="div" open={modal} onClose={() => setModal(false)}>

@@ -17,6 +17,9 @@ const getInap = async () => {
             asrama: true,
             keluhans: true,
             kelas: true
+        },
+        orderBy: {
+            createdAt: "asc"
         }
     })
 
@@ -42,6 +45,9 @@ const getMaster = async () => {
             asrama: true,
             keluhans: true,
             kelas: true
+        },
+        orderBy: {
+            createdAt: "asc"
         }
     })
 

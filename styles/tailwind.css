@@ -704,12 +704,12 @@ img.dark-img {
 
 /* swipeable list */
 .swipeable-list {
-    @apply space-y-2;
+    @apply space-y-3;
 }
 
-.swipeable-list-item__content {
-    @apply bg-white shadow overflow-hidden;
-}
+/* .swipeable-list-item__content {
+    @apply bg-white shadow overflow-hidden rounded-lg !important;
+} */
 
 .swipeable-list-item__trailing-actions {
     @apply flex items-center justify-center bg-green-700 text-white;
