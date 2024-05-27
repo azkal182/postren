@@ -39,6 +39,7 @@ interface Option {
 
 const Table = ({ data, kelas, asrama, keluhans }: { data: any; kelas: any; asrama: any; keluhans: any }) => {
     const [modal, setModal] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const [selectedValue, setSelectedValue] = useState<namesOption | null | undefined>(null);
     const [kelasLoading, setKelasLoading] = useState(false);
     const [asramaLoading, setAsramaLoading] = useState(false);
@@ -76,7 +77,9 @@ const Table = ({ data, kelas, asrama, keluhans }: { data: any; kelas: any; asram
     const onSubmit = async (values: formCreateMaster) => {
         addOptimisticData({ ...values, createdAt: Date.now() });
         setModal(false);
+        setIsLoading(true);
         createMaster(values).then((val) => {
+            setIsLoading(false);
             if (val.success) {
                 const toast = Swal.mixin({
                     toast: true,
@@ -156,7 +159,12 @@ const Table = ({ data, kelas, asrama, keluhans }: { data: any; kelas: any; asram
         });
     };
 
-    console.log({ screenSize });
+    const handleModalClose = () => {
+        form.reset();
+        setModal(false);
+    };
+
+    // console.log({ screenSize });
 
     return (
         <>
@@ -230,7 +238,7 @@ const Table = ({ data, kelas, asrama, keluhans }: { data: any; kelas: any; asram
             </div>
             {/* modal  */}
             <Transition appear show={modal} as={Fragment}>
-                <Dialog as="div" open={modal} onClose={() => setModal(false)}>
+                <Dialog as="div" open={modal} onClose={() => handleModalClose()}>
                     <Transition.Child as={Fragment} enter="ease-out duration-300" enterFrom="opacity-0" enterTo="opacity-100" leave="ease-in duration-200" leaveFrom="opacity-100" leaveTo="opacity-0">
                         <div className="fixed inset-0" />
                     </Transition.Child>
@@ -248,7 +256,7 @@ const Table = ({ data, kelas, asrama, keluhans }: { data: any; kelas: any; asram
                                 <Dialog.Panel as="div" className="panel my-8 w-full max-w-lg overflow-hidden rounded-lg border-0 p-0 text-black dark:text-white-dark">
                                     <div className="flex items-center justify-between bg-[#fbfbfb] px-5 py-3 dark:bg-[#121c2c]">
                                         <div className="text-lg font-bold">Tambah Data</div>
-                                        <button type="button" className="text-white-dark hover:text-dark" onClick={() => setModal(false)}>
+                                        <button type="button" className="text-white-dark hover:text-dark" onClick={() => handleModalClose()}>
                                             <IconX />
                                         </button>
                                     </div>
@@ -266,6 +274,7 @@ const Table = ({ data, kelas, asrama, keluhans }: { data: any; kelas: any; asram
                                                                     {/* <input {...field} type="text" placeholder="John Doe" className={`form-input w-full text-base`} /> */}
                                                                     <div className="custom-select">
                                                                         <AsyncSelect
+                                                                            autoFocus
                                                                             {...field}
                                                                             onChange={(value) => {
                                                                                 const finalValue = {
@@ -447,7 +456,7 @@ const Table = ({ data, kelas, asrama, keluhans }: { data: any; kelas: any; asram
                                             </form>
                                         </Form>
                                         <div className="mt-8 flex items-center justify-end">
-                                            <button type="button" className="btn btn-outline-danger" onClick={() => setModal(false)}>
+                                            <button type="button" className="btn btn-outline-danger" onClick={() => handleModalClose()}>
                                                 Discard
                                             </button>
                                             <button type="submit" form="createMaster" className="btn btn-primary ltr:ml-4 rtl:mr-4">

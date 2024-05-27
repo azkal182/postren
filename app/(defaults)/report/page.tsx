@@ -33,17 +33,16 @@ const ReportPage = () => {
                     <div>
                         <label htmlFor="monthSelect">Bulan</label>
                         <select value={selectedMonth} onChange={(e) => handleMonthChange(e)} id="monthSelect" className="form-select w-full text-white-dark md:w-32" required>
-                            <option>Pilih Bulan</option>
                             <option value="">Pilih Bulan</option>
-                            <option value="01">Januari</option>
-                            <option value="02">Februari</option>
-                            <option value="03">Maret</option>
-                            <option value="04">April</option>
-                            <option value="05">Mei</option>
-                            <option value="06">Juni</option>
-                            <option value="07">Juli</option>
-                            <option value="08">Agustus</option>
-                            <option value="09">September</option>
+                            <option value="1">Januari</option>
+                            <option value="2">Februari</option>
+                            <option value="3">Maret</option>
+                            <option value="4">April</option>
+                            <option value="5">Mei</option>
+                            <option value="6">Juni</option>
+                            <option value="7">Juli</option>
+                            <option value="8">Agustus</option>
+                            <option value="9">September</option>
                             <option value="10">Oktober</option>
                             <option value="11">November</option>
                             <option value="12">Desember</option>
@@ -67,7 +66,7 @@ const ReportPage = () => {
 
                 {data.length > 0 && (
                     <div className="mt-4">
-                        <h1 className="text-center text-lg font-bold">Laporan Bulan {bulan[Number(selectedMonth)]}</h1>
+                        <h1 className="text-center text-lg font-bold">Laporan Bulan {bulan[Number(selectedMonth) - 1]}</h1>
                         <div className="table-responsive mb-5 mt-6">
                             <table>
                                 <thead>
