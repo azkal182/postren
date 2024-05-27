@@ -23,6 +23,8 @@ import Swal from 'sweetalert2';
 import { ContextMenu, ContextMenuItem, ContextMenuTrigger, Submenu } from 'rctx-contextmenu';
 import useScreenSize from '@/hooks/use-screen-size';
 import SwipeableListPage from './swipeable-list';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useDebouncedCallback } from 'use-debounce';
 
 type formCreateMaster = z.infer<typeof CreateMaster>;
 
@@ -48,6 +50,19 @@ const Table = ({ data, kelas, asrama, keluhans }: { data: any; kelas: any; asram
     const [optimisticDatas, addOptimisticData] = useOptimistic(data, (state, newDatas) => {
         return [...state, newDatas];
     });
+    const searchParams = useSearchParams();
+    const pathName = usePathname();
+    const { replace } = useRouter();
+
+    const handleSearch = useDebouncedCallback((term: string) => {
+        const params = new URLSearchParams(searchParams);
+        if (term) {
+            params.set('search', term);
+        } else {
+            params.delete('search');
+        }
+        replace(`${pathName}?${params.toString()}`);
+    }, 300);
 
     const { width } = useScreenSize();
     let screenSize: any = '';
@@ -176,7 +191,13 @@ const Table = ({ data, kelas, asrama, keluhans }: { data: any; kelas: any; asram
                             Tambah
                         </button>
                     </div>
-                    <input type="text" className="form-input w-auto" placeholder="Search..." value=""></input>
+                    <input
+                        type="text"
+                        className="form-input w-auto"
+                        placeholder="Search..."
+                        onChange={(e) => handleSearch(e.target.value)}
+                        defaultValue={searchParams.get('search')?.toString()}
+                    ></input>
                 </div>
                 {screenSize !== 'sm' ? (
                     <div className="table-responsive mb-5 mt-6">

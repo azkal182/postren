@@ -5,16 +5,23 @@ import { getAsrama } from '@/actions/asrama';
 import { getKelas } from '@/actions/kelas';
 import { getKeluhans } from '@/actions/keluhan';
 import SwipeableListPage from './swipeable-list';
-const InapPage = async () => {
+const InapPage = async ({
+    searchParams,
+}: {
+    searchParams?: {
+        search?: string;
+    };
+}) => {
+    const query = searchParams?.search || '';
     // Primises.all();
     // const master = await getMaster();
     // const asrama = await getAsrama();
     // const kelas = await getKelas();
     // const keluhan = await getKeluhans();
 
-    const [master, asrama, kelas, keluhan] = await Promise.all([getInap(), getAsrama(), getKelas(), getKeluhans()]);
+    const [master, asrama, kelas, keluhan] = await Promise.all([getInap(query), getAsrama(), getKelas(), getKeluhans()]);
 
-    console.log(master);
+    // console.log(master);
 
     return (
         <div>

@@ -7,9 +7,10 @@ import { createAbstractBuilder } from "typescript";
 import { revalidatePath } from "next/cache";
 
 
-const getInap = async () => {
+const getInap = async (query: string) => {
     const master = await db.master.findMany({
         where: {
+            ...(query && { students: { name: { contains: query, mode: "insensitive" } } }),
             returnAt: null
         },
         include: {
