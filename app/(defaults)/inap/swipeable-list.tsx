@@ -214,6 +214,7 @@ const SwipeableListPage = ({ data, kelas, asrama, keluhans }: { data: any; kelas
                     const calculateDay = calculateDaysFromNow(item.createdAt);
                     return (
                         <SwipeableListItem
+                            key={item.id}
                             // className="dark:bg-[#1b2e4b] dark:text-white-dark"
                             leadingActions={leadingActions(item)}
                             trailingActions={trailingActions(item)}

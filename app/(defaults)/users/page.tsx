@@ -13,7 +13,7 @@ const UsersPage = async () => {
     const users = await db.user.findMany();
 
     if (session?.user?.role !== 'ADMIN') {
-        return <h1 className="text-center text-xl font-bold">You don't have permission!</h1>;
+        return <h1 className="text-center text-xl font-bold">You don&apos;t have permission!</h1>;
     }
 
     // console.log(users);
