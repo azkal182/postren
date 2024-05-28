@@ -26,5 +26,5 @@ export function calculateDaysFromNow(givenDate: string): number {
     // Calculate the number of days from the time difference in milliseconds
     const numberOfDays: number = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
 
-    return numberOfDays;
+    return numberOfDays + 1;
 }

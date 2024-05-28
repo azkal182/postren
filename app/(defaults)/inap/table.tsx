@@ -25,6 +25,7 @@ import useScreenSize from '@/hooks/use-screen-size';
 import SwipeableListPage from './swipeable-list';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useDebouncedCallback } from 'use-debounce';
+import { calculateDaysFromNow, cn } from '@/lib/utils';
 
 type formCreateMaster = z.infer<typeof CreateMaster>;
 
@@ -217,28 +218,41 @@ const Table = ({ data, kelas, asrama, keluhans }: { data: any; kelas: any; asram
                                 </tr>
                             </thead>
                             <tbody>
-                                {optimisticDatas.map((item: any, i: number) => (
-                                    <tr key={item.id}>
-                                        <td>{i + 1}</td>
-                                        <td>{dateFormat(item.createdAt)}</td>
-                                        <td>
-                                            <ContextMenuTrigger id={`menu-${item.id}`}>{item.name}</ContextMenuTrigger>
-                                        </td>
-                                        <td>{item.address.split(',')[0]}</td>
-                                        <td>{item.asramaId}</td>
-                                        <td>{item.kelasId}</td>
-                                        <td>{item.keluhans.join(', ')}</td>
-                                        <td>{item.description}</td>
-                                        <td>{item.room}</td>
-                                        <td>
-                                            <Tippy content="Pulang">
+                                {optimisticDatas.map((item: any, i: number) => {
+                                    const calculateDay = calculateDaysFromNow(item.createdAt);
+                                    return (
+                                        <tr
+                                            key={item.id}
+                                            className={cn(
+                                                calculateDay >= 5
+                                                    ? 'border-danger/20 bg-danger/20'
+                                                    : calculateDay >= 3
+                                                    ? 'border-warning/20 bg-warning/20'
+                                                    : 'border-dark-dark-light bg-dark-dark-light'
+                                            )}
+                                        >
+                                            <td>{i + 1}</td>
+                                            <td>{dateFormat(item.createdAt)}</td>
+                                            <td>
+                                                <ContextMenuTrigger id={`menu-${item.id}`}>{item.name}</ContextMenuTrigger>
+                                            </td>
+                                            <td>{item.address.split(',')[0]}</td>
+                                            <td>{item.asramaId}</td>
+                                            <td>{item.kelasId}</td>
+                                            <td>{item.keluhans.join(', ')}</td>
+                                            <td>{item.description}</td>
+                                            <td>{item.room}</td>
+                                            <td>
+                                                {/* <Tippy content="Pulang">
                                                 <button type="button" className="btn btn-warning h-8 w-8 rounded-full p-0">
                                                     <IconPencil className="h-4 w-4" />
                                                 </button>
-                                            </Tippy>
-                                        </td>
-                                    </tr>
-                                ))}
+                                            </Tippy> */}
+                                                {calculateDay} Hari
+                                            </td>
+                                        </tr>
+                                    );
+                                })}
                             </tbody>
                         </table>
                         {optimisticDatas.map((user: any) => (
@@ -248,8 +262,6 @@ const Table = ({ data, kelas, asrama, keluhans }: { data: any; kelas: any; asram
                                     <ContextMenuItem onClick={() => handleReturn(user, 'RS')}>RS</ContextMenuItem>
                                     <ContextMenuItem onClick={() => handleReturn(user, 'RUMAH')}>Rumah</ContextMenuItem>
                                 </Submenu>
-                                <ContextMenuItem>Play</ContextMenuItem>
-                                <ContextMenuItem>Send to {name}</ContextMenuItem>
                             </ContextMenu>
                         ))}
                     </div>

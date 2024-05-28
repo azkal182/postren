@@ -177,7 +177,7 @@ const SwipeableListPage = ({ data, kelas, asrama, keluhans }: { data: any; kelas
                     setModalInfo(true);
                 }}
             >
-                Action name
+                Info
             </SwipeAction>
         </LeadingActions>
     );
@@ -190,7 +190,7 @@ const SwipeableListPage = ({ data, kelas, asrama, keluhans }: { data: any; kelas
                     setModalConfirm(true);
                 }}
             >
-                Delete
+                Keluar
             </SwipeAction>
         </TrailingActions>
     );
@@ -221,8 +221,8 @@ const SwipeableListPage = ({ data, kelas, asrama, keluhans }: { data: any; kelas
                             <div
                                 // className="flex w-full items-center space-x-3 p-0 px-2 py-1 dark:bg-[#1b2e4b] dark:text-white-dark"
                                 className={cn(
-                                    'flex w-full items-center space-x-3 p-0 px-2 py-1',
-                                    calculateDay >= 3 ? (calculateDay >= 5 ? ' bg-[#e7515a] text-white shadow-lg' : ' bg-[#e2a03f] text-white shadow-lg') : ' dark:bg-[#1b2e4b] dark:text-white-dark'
+                                    'flex w-full items-center space-x-3 p-0 px-2 py-1 shadow',
+                                    calculateDay >= 3 ? (calculateDay >= 5 ? 'border-danger/20 bg-danger/20 ' : ' border-warning/20 bg-warning/20') : 'border-dark-dark-light bg-dark-dark-light'
                                 )}
                             >
                                 <div>{i + 1}</div>
