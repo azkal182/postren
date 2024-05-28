@@ -5,12 +5,14 @@ import { db } from "@/lib/db"
 import { CreateMaster, ReturnMasterSchema } from "@/schemas";
 import { createAbstractBuilder } from "typescript";
 import { revalidatePath } from "next/cache";
+import { Prisma } from "@prisma/client";
 
 
-const getInap = async (query: string) => {
+const getInap = async (query?: string, type?: any) => {
     const master = await db.master.findMany({
         where: {
             ...(query && { students: { name: { contains: query, mode: "insensitive" } } }),
+            ...(type && type !== "ALL" && { students: { sex: type } }),
             returnAt: null
         },
         include: {

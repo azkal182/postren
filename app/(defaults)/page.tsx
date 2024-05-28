@@ -4,14 +4,19 @@ import Dropdown from '@/components/dropdown';
 import IconHorizontalDots from '@/components/icon/icon-horizontal-dots';
 import IconEye from '@/components/icon/icon-eye';
 import { db } from '@/lib/db';
+import { auth } from '@/auth';
+import ChartComponent from './chart';
+import ChartAsramaComponent from './chart-asrama';
 
 export const metadata: Metadata = {
     title: 'Dashboard',
 };
 
 async function page() {
+    const session: any = await auth();
     const masterCount = await db.master.count({
         where: {
+            ...(session?.user?.type !== 'ALL' && { students: { sex: session?.user?.type } }),
             returnAt: null,
         },
     });
@@ -126,6 +131,11 @@ async function page() {
                         Last Week 50.01%
                     </div>
                 </div>
+            </div>
+
+            <div className="mb-6 grid grid-cols-1 gap-6 text-white xl:grid-cols-2">
+                <ChartComponent />
+                <ChartAsramaComponent />
             </div>
             {/* <div className="panel mx-auto max-w-[550px] space-y-2 divide-y">
                 <div className="flex items-center justify-between">

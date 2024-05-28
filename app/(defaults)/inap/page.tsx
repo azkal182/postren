@@ -5,6 +5,7 @@ import { getAsrama } from '@/actions/asrama';
 import { getKelas } from '@/actions/kelas';
 import { getKeluhans } from '@/actions/keluhan';
 import SwipeableListPage from './swipeable-list';
+import { auth } from '@/auth';
 const InapPage = async ({
     searchParams,
 }: {
@@ -13,13 +14,10 @@ const InapPage = async ({
     };
 }) => {
     const query = searchParams?.search || '';
-    // Primises.all();
-    // const master = await getMaster();
-    // const asrama = await getAsrama();
-    // const kelas = await getKelas();
-    // const keluhan = await getKeluhans();
+    const session = await auth();
+    const type = session?.user?.type;
 
-    const [master, asrama, kelas, keluhan] = await Promise.all([getInap(query), getAsrama(), getKelas(), getKeluhans()]);
+    const [master, asrama, kelas, keluhan] = await Promise.all([getInap(query, type), getAsrama(), getKelas(), getKeluhans()]);
 
     // console.log(master);
 
