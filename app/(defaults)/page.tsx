@@ -5,8 +5,9 @@ import IconHorizontalDots from '@/components/icon/icon-horizontal-dots';
 import IconEye from '@/components/icon/icon-eye';
 import { db } from '@/lib/db';
 import { auth } from '@/auth';
-import ChartComponent from './chart';
 import ChartAsramaComponent from './chart-asrama';
+import _ from 'lodash';
+import ChartKeluhanComponent from './chart-keluhan';
 
 export const metadata: Metadata = {
     title: 'Dashboard',
@@ -22,6 +23,56 @@ async function page() {
     });
 
     const userCount = await db.user.count();
+
+    const master = await db.master.findMany({
+        where: {
+            ...(session?.user?.type !== 'ALL' && { students: { sex: session?.user?.type } }),
+            returnAt: null,
+        },
+        include: {
+            keluhans: true,
+            asrama: true,
+        },
+    });
+    const groupedByAsrama = _.groupBy(master, 'asramaId');
+
+    // Menghitung jumlah kemunculan setiap asramaId
+    const asramaCounts = _.reduce(
+        groupedByAsrama,
+        (result: any, value: any, key: any) => {
+            result.count.push(value.length);
+            result.categories.push(key);
+            return result;
+        },
+        { count: [], categories: [] }
+    );
+
+    const keluhanGrouped = _.chain(master)
+        .flatMap('keluhans')
+        .groupBy('name')
+        .map((value, key) => ({
+            name: key,
+            count: value.length,
+        }))
+        .value();
+
+    const keluhanCounts = _.reduce(
+        keluhanGrouped,
+        (result: any, value: any) => {
+            result.count.push(value.count);
+            result.categories.push(value.name);
+            return result;
+        },
+        { count: [], categories: [] }
+    );
+
+    const finalResult = {
+        asrama: asramaCounts,
+        keluhan: keluhanCounts,
+    };
+
+    console.log(finalResult);
+    console.log(master);
 
     return (
         <div>
@@ -134,8 +185,8 @@ async function page() {
             </div>
 
             <div className="mb-6 grid grid-cols-1 gap-6 text-white xl:grid-cols-2">
-                <ChartComponent />
-                <ChartAsramaComponent />
+                <ChartKeluhanComponent data={finalResult.keluhan} />
+                <ChartAsramaComponent data={finalResult.asrama} />
             </div>
             {/* <div className="panel mx-auto max-w-[550px] space-y-2 divide-y">
                 <div className="flex items-center justify-between">

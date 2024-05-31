@@ -16,8 +16,9 @@ const InapPage = async ({
     const query = searchParams?.search || '';
     const session = await auth();
     const type = session?.user?.type;
+    console.log(type);
 
-    const [master, asrama, kelas, keluhan] = await Promise.all([getInap(query, type), getAsrama(), getKelas(), getKeluhans()]);
+    const [master, asrama, kelas, keluhan] = await Promise.all([getInap(query, type), getAsrama(type), getKelas(type), getKeluhans()]);
 
     // console.log(master);
 
@@ -25,7 +26,7 @@ const InapPage = async ({
         <div>
             <h1 className="text-center text-lg font-bold">DATA SANTRI</h1>
             {/* <div className="panel mt-4"> */}
-            <Table data={master} asrama={asrama} kelas={kelas} keluhans={keluhan} />
+            <Table data={master} asrama={asrama} kelas={kelas} keluhans={keluhan} type={type} />
             {/* </div> */}
             {/* <SwipeableListPage data={master} asrama={asrama} kelas={kelas} keluhans={keluhan} /> */}
         </div>

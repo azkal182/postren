@@ -91,6 +91,7 @@ const createMaster = async (values: FormTypeCreateMaster) => {
 
     //     }
     // })
+    console.log({ asramaId, sex });
 
     try {
         await db.master.create({
@@ -107,8 +108,8 @@ const createMaster = async (values: FormTypeCreateMaster) => {
                         }
                     }
                 },
-                ...(kelasId && { kelas: { connect: { name: kelasId } } }),
-                asrama: { connect: { name: asramaId } },
+                ...(kelasId && { kelas: { connect: { name_sex: { name: kelasId, sex: sex } } } }),
+                asrama: { connect: { name_sex: { name: asramaId, sex: sex } } },
                 description,
                 room,
                 keluhans: {

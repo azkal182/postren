@@ -48,35 +48,25 @@ enum SexType {
 }
 
 model Master {
-    id                String              @id @default(uuid())
-    createdAt         DateTime            @default(now())
-    returnAt          DateTime?
-    studentId         String
-    students          Student             @relation(references: [id], fields: [studentId])
-    kelasId           String?
-    kelas             Kelas?              @relation(references: [name], fields: [kelasId])
-    asramaId          String
-    asrama            Asrama              @relation(references: [name], fields: [asramaId])
-    keluhans          Keluhan[]
-    description       String?
-    room              String?
-    returnTo          ReturnTo?
-    KeluhansOnMasters KeluhansOnMasters[]
-}
-
-model KeluhansOnMasters {
-    keluhanId String
-    keluhan   Keluhan @relation(references: [name], fields: [keluhanId])
-    masterId  String
-    master    Master  @relation(references: [id], fields: [masterId])
-
-    @@id([keluhanId, masterId])
+    id          String    @id @default(uuid())
+    createdAt   DateTime  @default(now())
+    returnAt    DateTime?
+    studentId   String
+    students    Student   @relation(references: [id], fields: [studentId])
+    kelasId     String?
+    kelas       Kelas?    @relation(references: [name, sex], fields: [kelasId, sex])
+    asramaId    String
+    asrama      Asrama    @relation(references: [name, sex], fields: [asramaId, sex])
+    keluhans    Keluhan[]
+    description String?
+    room        String?
+    returnTo    ReturnTo?
+    sex         SexType
 }
 
 model Keluhan {
-    name              String              @id
-    master            Master[]
-    KeluhansOnMasters KeluhansOnMasters[]
+    name   String   @id
+    master Master[]
 }
 
 enum ReturnTo {
@@ -86,11 +76,17 @@ enum ReturnTo {
 }
 
 model Kelas {
-    name   String   @id
+    name   String
+    sex    SexType  @default(LK)
     master Master[]
+
+    @@id([name, sex])
 }
 
 model Asrama {
-    name   String   @id
+    name   String
+    sex    SexType  @default(LK)
     master Master[]
+
+    @@id([name, sex])
 }

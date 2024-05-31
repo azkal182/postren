@@ -41,7 +41,7 @@ interface Option {
     readonly value: string;
 }
 
-const Table = ({ data, kelas, asrama, keluhans }: { data: any; kelas: any; asrama: any; keluhans: any }) => {
+const Table = ({ data, kelas, asrama, keluhans, type }: { data: any; kelas: any; asrama: any; keluhans: any; type: any }) => {
     const [modal, setModal] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [selectedValue, setSelectedValue] = useState<namesOption | null | undefined>(null);
@@ -86,7 +86,7 @@ const Table = ({ data, kelas, asrama, keluhans }: { data: any; kelas: any; asram
         resolver: zodResolver(CreateMaster),
         defaultValues: {
             studentId: 'StudentId',
-            sex: 'LK',
+            sex: type,
             room: 'MELATI',
         },
     });
@@ -146,14 +146,14 @@ const Table = ({ data, kelas, asrama, keluhans }: { data: any; kelas: any; asram
 
     const handleCreateKelas = async (inputValue: string) => {
         setKelasLoading(true);
-        const newOption = await createKelas(inputValue);
+        const newOption = await createKelas(inputValue, type);
         setKelasLoading(false);
         setKelasValue({ label: newOption.name, value: newOption.name });
     };
 
     const handleCreateAsrama = async (inputValue: string) => {
         setAsramaLoading(true);
-        const newOption = await createAsrama(inputValue);
+        const newOption = await createAsrama(inputValue, type);
         setAsramaLoading(false);
         setAsramaValue({ label: newOption.name, value: newOption.name });
     };
@@ -389,7 +389,7 @@ const Table = ({ data, kelas, asrama, keluhans }: { data: any; kelas: any; asram
                                                                             isDisabled={kelasLoading}
                                                                             isLoading={kelasLoading}
                                                                             // @ts-ignore
-                                                                            onChange={(newValue) => field.onChange(newValue.value)}
+                                                                            onChange={(newValue) => field.onChange(newValue?.value)}
                                                                             onCreateOption={handleCreateKelas}
                                                                             options={kelasOptions}
                                                                             // value={kelasOptions.find((c: any) => c.value === field.value)}

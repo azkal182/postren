@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
 import { useSelector } from 'react-redux';
 
-const ChartAsramaComponent = () => {
+const ChartAsramaComponent = ({ data }: { data: any }) => {
     const isDark = useSelector((state: IRootState) => state.themeConfig.theme === 'dark' || state.themeConfig.isDarkMode);
     const isRtl = useSelector((state: IRootState) => state.themeConfig.rtlClass) === 'rtl';
     const [isMounted, setIsMounted] = useState(false);
@@ -13,7 +13,7 @@ const ChartAsramaComponent = () => {
         series: [
             {
                 name: 'ASRAMA',
-                data: [44, 55, 41, 67, 22, 43],
+                data: data.count,
             },
         ],
         options: {
@@ -48,7 +48,7 @@ const ChartAsramaComponent = () => {
             },
             xaxis: {
                 type: 'string',
-                categories: [`Na'im`, `Illiyyin`, 'Musa', `Ma'wa`, 'Darussalam', 'Tasawuf'],
+                categories: data.categories,
                 axisBorder: {
                     color: isDark ? '#191e3a' : '#e0e6ed',
                 },

@@ -37,12 +37,7 @@ async function main() {
             { name: "GONDOKAN" },
             { name: "GATAL" },
             { name: "AMANDEL" },
-            { name: "DIARE" },
-            { name: "MAG" },
-            { name: "TIPES" },
-            { name: "DBD" },
-            { name: "RADANG" },
-            { name: "PATAH TULANG" }
+            { name: "DIARE" }
         ]
     })
 
