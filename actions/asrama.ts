@@ -12,7 +12,7 @@ const getAsrama = async () => {
 const createAsrama = async (name: string) => {
     const kelas = await db.asrama.create({
         data: {
-            name
+            name: name.toUpperCase()
         }
     })
     revalidateTag("asrama")

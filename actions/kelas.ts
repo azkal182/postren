@@ -4,7 +4,11 @@ import { db } from "@/lib/db"
 import { revalidateTag } from "next/cache"
 
 const getKelas = async () => {
-    const kelas = await db.kelas.findMany()
+    const kelas = await db.kelas.findMany({
+        orderBy: {
+            name: "asc"
+        }
+    })
     revalidateTag("kelas")
     return kelas
 }
@@ -12,7 +16,7 @@ const getKelas = async () => {
 const createKelas = async (name: string) => {
     const kelas = await db.kelas.create({
         data: {
-            name
+            name: name.toUpperCase()
         }
     })
     revalidateTag("kelas")

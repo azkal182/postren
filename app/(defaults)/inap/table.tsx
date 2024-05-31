@@ -26,6 +26,7 @@ import SwipeableListPage from './swipeable-list';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useDebouncedCallback } from 'use-debounce';
 import { calculateDaysFromNow, cn } from '@/lib/utils';
+import { createKeluhan } from '@/actions/keluhan';
 
 type formCreateMaster = z.infer<typeof CreateMaster>;
 
@@ -46,9 +47,14 @@ const Table = ({ data, kelas, asrama, keluhans }: { data: any; kelas: any; asram
     const [selectedValue, setSelectedValue] = useState<namesOption | null | undefined>(null);
     const [kelasLoading, setKelasLoading] = useState(false);
     const [asramaLoading, setAsramaLoading] = useState(false);
-    const [kelasValue, setKelasValue] = useState<Option | null>();
+    const [keluhanLoading, setKeluhanLoading] = useState(false);
+    const [kelasValue, setKelasValue] = useState<Option>();
     const [asramaValue, setAsramaValue] = useState<Option | null>();
+    const [keluhanValue, setKeluhanValue] = useState([]);
     const [optimisticDatas, addOptimisticData] = useOptimistic(data, (state, newDatas) => {
+        return [...state, newDatas];
+    });
+    const [optimisticKelas, addOptimisticKelas] = useOptimistic(kelas, (state, newDatas) => {
         return [...state, newDatas];
     });
     const searchParams = useSearchParams();
@@ -150,6 +156,12 @@ const Table = ({ data, kelas, asrama, keluhans }: { data: any; kelas: any; asram
         const newOption = await createAsrama(inputValue);
         setAsramaLoading(false);
         setAsramaValue({ label: newOption.name, value: newOption.name });
+    };
+
+    const handleCreateKeluhan = async (inputValue: string) => {
+        setKeluhanLoading(true);
+        const newOption = await createKeluhan(inputValue);
+        setKeluhanLoading(true);
     };
 
     const handleReturn = async (user: any, returnTo: any) => {
@@ -376,10 +388,12 @@ const Table = ({ data, kelas, asrama, keluhans }: { data: any; kelas: any; asram
                                                                             isClearable
                                                                             isDisabled={kelasLoading}
                                                                             isLoading={kelasLoading}
+                                                                            // @ts-ignore
                                                                             onChange={(newValue) => field.onChange(newValue.value)}
                                                                             onCreateOption={handleCreateKelas}
                                                                             options={kelasOptions}
-                                                                            value={kelasOptions.find((c: any) => c.value === field.value)}
+                                                                            // value={kelasOptions.find((c: any) => c.value === field.value)}
+                                                                            value={kelasValue}
                                                                         />
                                                                     </div>
                                                                 </FormControl>
@@ -414,10 +428,12 @@ const Table = ({ data, kelas, asrama, keluhans }: { data: any; kelas: any; asram
                                                                             isClearable
                                                                             isDisabled={asramaLoading}
                                                                             isLoading={asramaLoading}
+                                                                            // @ts-ignore
                                                                             onChange={(newValue) => field.onChange(newValue.value)}
                                                                             onCreateOption={handleCreateAsrama}
                                                                             options={asramaOptions}
-                                                                            value={asramaOptions.find((c: any) => c.value === field.value)}
+                                                                            // value={asramaOptions.find((c: any) => c.value === field.value)}
+                                                                            value={asramaValue}
                                                                         />
                                                                     </div>
                                                                 </FormControl>
@@ -436,17 +452,19 @@ const Table = ({ data, kelas, asrama, keluhans }: { data: any; kelas: any; asram
                                                                 <FormControl className="">
                                                                     {/* <input {...field} type="text" placeholder="Asrama" className={`form-input w-full text-base`} /> */}
                                                                     <div className="custom-select">
-                                                                        <Select
+                                                                        <CreatableSelect
                                                                             {...field}
                                                                             classNamePrefix="addl-class"
                                                                             options={keluhanOptions}
                                                                             value={keluhanOptions.find((c: any) => c.value === field.value)}
+                                                                            // value={keluhanValue}
                                                                             onChange={(val) => {
                                                                                 const values = val.map((item) => item.value);
-                                                                                console.log(values);
-
+                                                                                // handleCreateKeluahn(values);
+                                                                                // console.log(values);
                                                                                 field.onChange(values);
                                                                             }}
+                                                                            onCreateOption={(inputValue) => handleCreateKeluhan(inputValue)}
                                                                             isMulti
                                                                         />
                                                                     </div>
