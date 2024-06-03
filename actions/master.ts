@@ -154,18 +154,24 @@ const returnMaster = async (id?: any, returnTo?: any) => {
 
 }
 
-const getMasterByMonth = async (month: string, year: string) => {
+const getMasterByMonth = async (month: string, year: string, type: any) => {
     // Menghitung tanggal awal bulan
     const startDate = new Date(`${year}-${month}-01`);
+    startDate.setDate(startDate.getDate() + 1)
+
+
 
     // Menghitung tanggal akhir bulan
     const endDate = new Date(startDate);
     endDate.setMonth(endDate.getMonth() + 1);
     endDate.setDate(endDate.getDate() - 1);
 
+
+
     try {
         const master = await db.master.findMany({
             where: {
+                ...(type && type !== "ALL" && { sex: type }),
                 createdAt: {
                     gte: startDate,
                     lte: endDate

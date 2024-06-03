@@ -27,6 +27,8 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useDebouncedCallback } from 'use-debounce';
 import { calculateDaysFromNow, cn } from '@/lib/utils';
 import { createKeluhan } from '@/actions/keluhan';
+import SearchBox from '@/components/inap/search-box';
+import FormInap from './form-inap';
 
 type formCreateMaster = z.infer<typeof CreateMaster>;
 
@@ -43,86 +45,10 @@ interface Option {
 
 const Table = ({ data, kelas, asrama, keluhans, type }: { data: any; kelas: any; asrama: any; keluhans: any; type: any }) => {
     const [modal, setModal] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
-    const [selectedValue, setSelectedValue] = useState<namesOption | null | undefined>(null);
-    const [kelasLoading, setKelasLoading] = useState(false);
-    const [asramaLoading, setAsramaLoading] = useState(false);
-    const [keluhanLoading, setKeluhanLoading] = useState(false);
-    const [kelasValue, setKelasValue] = useState<Option>();
-    const [asramaValue, setAsramaValue] = useState<Option | null>();
-    const [keluhanValue, setKeluhanValue] = useState([]);
-    const [optimisticDatas, addOptimisticData] = useOptimistic(data, (state, newDatas) => {
-        return [...state, newDatas];
-    });
-    const [optimisticKelas, addOptimisticKelas] = useOptimistic(kelas, (state, newDatas) => {
-        return [...state, newDatas];
-    });
-    const searchParams = useSearchParams();
-    const pathName = usePathname();
-    const { replace } = useRouter();
-
-    const handleSearch = useDebouncedCallback((term: string) => {
-        const params = new URLSearchParams(searchParams);
-        if (term) {
-            params.set('search', term);
-        } else {
-            params.delete('search');
-        }
-        replace(`${pathName}?${params.toString()}`);
-    }, 300);
-
-    const { width } = useScreenSize();
-    let screenSize: any = '';
-
-    if (width < 600) {
-        screenSize = 'sm';
-    } else if (width >= 600 && width < 960) {
-        screenSize = 'md';
-    } else {
-        screenSize = 'lg';
-    }
-
-    const form = useForm<formCreateMaster>({
-        resolver: zodResolver(CreateMaster),
-        defaultValues: {
-            studentId: 'StudentId',
-            sex: type,
-            room: 'MELATI',
-        },
-    });
-
-    const namesOptions = (inputValue: string) =>
-        new Promise<namesOption[]>((resolve) => {
-            resolve(searchUser(inputValue));
-        });
-
-    const onSubmit = async (values: formCreateMaster) => {
-        addOptimisticData({ ...values, createdAt: Date.now() });
-        setModal(false);
-        setIsLoading(true);
-        createMaster(values).then((val) => {
-            setIsLoading(false);
-            if (val.success) {
-                const toast = Swal.mixin({
-                    toast: true,
-                    position: 'top-end',
-                    showConfirmButton: false,
-                    timer: 3000,
-                    showCloseButton: true,
-                    customClass: {
-                        popup: `color-success`,
-                    },
-                });
-                toast.fire({
-                    title: 'Data Berhasil ditambahkan!',
-                });
-
-                form.reset();
-            } else {
-                alert('Something went wrong!');
-            }
-        });
-    };
+    // const [optimisticDatas, addOptimisticData] = useOptimistic(data, (state, newDatas) => {
+    //     return [...state, newDatas];
+    // });
+    const screenSize = useScreenSize();
 
     function dateFormat(tanggal: any) {
         const date = new Date(tanggal);
@@ -131,38 +57,6 @@ const Table = ({ data, kelas, asrama, keluhans, type }: { data: any; kelas: any;
         const formattedDate = new Intl.DateTimeFormat('id-ID', options).format(date);
         return formattedDate;
     }
-
-    const asramaOptions = asrama.map((value: any) => {
-        return { label: value.name, value: value.name };
-    });
-
-    const kelasOptions = kelas.map((value: any) => {
-        return { label: value.name, value: value.name };
-    });
-
-    const keluhanOptions = keluhans.map((value: any) => {
-        return { label: value.name, value: value.name };
-    });
-
-    const handleCreateKelas = async (inputValue: string) => {
-        setKelasLoading(true);
-        const newOption = await createKelas(inputValue, type);
-        setKelasLoading(false);
-        setKelasValue({ label: newOption.name, value: newOption.name });
-    };
-
-    const handleCreateAsrama = async (inputValue: string) => {
-        setAsramaLoading(true);
-        const newOption = await createAsrama(inputValue, type);
-        setAsramaLoading(false);
-        setAsramaValue({ label: newOption.name, value: newOption.name });
-    };
-
-    const handleCreateKeluhan = async (inputValue: string) => {
-        setKeluhanLoading(true);
-        const newOption = await createKeluhan(inputValue);
-        setKeluhanLoading(true);
-    };
 
     const handleReturn = async (user: any, returnTo: any) => {
         Swal.fire({
@@ -188,11 +82,8 @@ const Table = ({ data, kelas, asrama, keluhans, type }: { data: any; kelas: any;
     };
 
     const handleModalClose = () => {
-        form.reset();
         setModal(false);
     };
-
-    // console.log({ screenSize });
 
     return (
         <>
@@ -204,13 +95,7 @@ const Table = ({ data, kelas, asrama, keluhans, type }: { data: any; kelas: any;
                             Tambah
                         </button>
                     </div>
-                    <input
-                        type="text"
-                        className="form-input w-auto"
-                        placeholder="Search..."
-                        onChange={(e) => handleSearch(e.target.value)}
-                        defaultValue={searchParams.get('search')?.toString()}
-                    ></input>
+                    <SearchBox />
                 </div>
                 {screenSize !== 'sm' ? (
                     <div className="table-responsive mb-5 mt-6">
@@ -230,7 +115,7 @@ const Table = ({ data, kelas, asrama, keluhans, type }: { data: any; kelas: any;
                                 </tr>
                             </thead>
                             <tbody>
-                                {optimisticDatas.map((item: any, i: number) => {
+                                {data.map((item: any, i: number) => {
                                     const calculateDay = calculateDaysFromNow(item.createdAt);
                                     return (
                                         <tr
@@ -244,7 +129,7 @@ const Table = ({ data, kelas, asrama, keluhans, type }: { data: any; kelas: any;
                                             )}
                                         >
                                             <td>{i + 1}</td>
-                                            <td>{dateFormat(item.createdAt)}</td>
+                                            <td className="whitespace-nowrap">{dateFormat(item.createdAt)}</td>
                                             <td>
                                                 <ContextMenuTrigger id={`menu-${item.id}`}>{item.name}</ContextMenuTrigger>
                                             </td>
@@ -254,20 +139,13 @@ const Table = ({ data, kelas, asrama, keluhans, type }: { data: any; kelas: any;
                                             <td>{item.keluhans.join(', ')}</td>
                                             <td>{item.description}</td>
                                             <td>{item.room}</td>
-                                            <td>
-                                                {/* <Tippy content="Pulang">
-                                                <button type="button" className="btn btn-warning h-8 w-8 rounded-full p-0">
-                                                    <IconPencil className="h-4 w-4" />
-                                                </button>
-                                            </Tippy> */}
-                                                {calculateDay} Hari
-                                            </td>
+                                            <td>{calculateDay} Hari</td>
                                         </tr>
                                     );
                                 })}
                             </tbody>
                         </table>
-                        {optimisticDatas.map((user: any) => (
+                        {data.map((user: any) => (
                             <ContextMenu id={`menu-${user.id}`} key={user.id}>
                                 <Submenu title="Keluar Ke">
                                     <ContextMenuItem onClick={() => handleReturn(user, 'ASRAMA')}>Asrama</ContextMenuItem>
@@ -306,214 +184,7 @@ const Table = ({ data, kelas, asrama, keluhans, type }: { data: any; kelas: any;
                                         </button>
                                     </div>
                                     <div className="p-5">
-                                        <Form {...form}>
-                                            <form id="createMaster" onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
-                                                <FormField
-                                                    control={form.control}
-                                                    name="name"
-                                                    render={({ field }) => (
-                                                        <FormItem className="flex">
-                                                            <FormLabel className="w-32 py-2">Name</FormLabel>
-                                                            <div className={`${form.formState.errors.name ? 'has-error' : ''} w-full`}>
-                                                                <FormControl className="">
-                                                                    {/* <input {...field} type="text" placeholder="John Doe" className={`form-input w-full text-base`} /> */}
-                                                                    <div className="custom-select">
-                                                                        <AsyncSelect
-                                                                            autoFocus
-                                                                            {...field}
-                                                                            onChange={(value) => {
-                                                                                const finalValue = {
-                                                                                    value: value?.name,
-                                                                                    label: value?.name,
-                                                                                    address: value?.address,
-                                                                                    studentId: value?.value,
-                                                                                };
-                                                                                // @ts-ignore
-                                                                                setSelectedValue(finalValue);
-                                                                                form.setValue('address', finalValue?.address ? finalValue?.address : '');
-                                                                                form.setValue('studentId', finalValue?.studentId ? finalValue?.studentId : '');
-                                                                                field.onChange(finalValue.value);
-                                                                            }}
-                                                                            value={selectedValue}
-                                                                            cacheOptions
-                                                                            defaultOptions
-                                                                            loadOptions={namesOptions}
-                                                                        />
-                                                                    </div>
-                                                                </FormControl>
-                                                                <FormMessage />
-                                                            </div>
-                                                        </FormItem>
-                                                    )}
-                                                />
-                                                <FormField
-                                                    control={form.control}
-                                                    name="address"
-                                                    render={({ field }) => (
-                                                        <FormItem className="flex">
-                                                            <FormLabel className="w-32 py-2">Address</FormLabel>
-                                                            <div className={`${form.formState.errors.address ? 'has-error' : ''} w-full`}>
-                                                                <FormControl className="">
-                                                                    <input {...field} type="text" placeholder="Address" className={`form-input w-full text-base`} />
-                                                                </FormControl>
-                                                                <FormMessage />
-                                                            </div>
-                                                        </FormItem>
-                                                    )}
-                                                />
-
-                                                <FormField
-                                                    control={form.control}
-                                                    name="kelasId"
-                                                    render={({ field }) => (
-                                                        <FormItem className="flex">
-                                                            <FormLabel className="w-32 py-2">Kelas</FormLabel>
-                                                            <div className={`${form.formState.errors.kelasId ? 'has-error' : ''} w-full`}>
-                                                                <FormControl className="">
-                                                                    {/* <input {...field} type="text" placeholder="Kelas" className={`form-input w-full text-base`} /> */}
-                                                                    <div className="custom-select">
-                                                                        {/* <Select
-                                                                            {...field}
-                                                                            classNamePrefix="addl-class"
-                                                                            options={kelasOptions}
-                                                                            value={kelasOptions.find((c: any) => c.value === field.value)}
-                                                                            onChange={(val) => {
-                                                                                // console.log(val);
-                                                                                field.onChange(val?.value);
-                                                                            }}
-                                                                            isClearable
-                                                                        /> */}
-                                                                        <CreatableSelect
-                                                                            {...field}
-                                                                            isClearable
-                                                                            isDisabled={kelasLoading}
-                                                                            isLoading={kelasLoading}
-                                                                            // @ts-ignore
-                                                                            onChange={(newValue) => field.onChange(newValue?.value)}
-                                                                            onCreateOption={handleCreateKelas}
-                                                                            options={kelasOptions}
-                                                                            // value={kelasOptions.find((c: any) => c.value === field.value)}
-                                                                            value={kelasValue}
-                                                                        />
-                                                                    </div>
-                                                                </FormControl>
-                                                                <FormMessage />
-                                                            </div>
-                                                        </FormItem>
-                                                    )}
-                                                />
-
-                                                <FormField
-                                                    control={form.control}
-                                                    name="asramaId"
-                                                    render={({ field }) => (
-                                                        <FormItem className="flex">
-                                                            <FormLabel className="w-32 py-2">Asrama</FormLabel>
-                                                            <div className={`${form.formState.errors.asramaId ? 'has-error' : ''} w-full`}>
-                                                                <FormControl className="">
-                                                                    {/* <input {...field} type="text" placeholder="Asrama" className={`form-input w-full text-base`} /> */}
-                                                                    <div className="custom-select">
-                                                                        {/* <CreatableSelect
-                                                                            {...field}
-                                                                            classNamePrefix="addl-class"
-                                                                            options={asramaOptions}
-                                                                            value={asramaOptions.find((c: any) => c.value === field.value)}
-                                                                            onChange={(val) => {
-                                                                                field.onChange(val.value);
-                                                                            }}
-                                                                        /> */}
-
-                                                                        <CreatableSelect
-                                                                            {...field}
-                                                                            isClearable
-                                                                            isDisabled={asramaLoading}
-                                                                            isLoading={asramaLoading}
-                                                                            // @ts-ignore
-                                                                            onChange={(newValue) => field.onChange(newValue.value)}
-                                                                            onCreateOption={handleCreateAsrama}
-                                                                            options={asramaOptions}
-                                                                            // value={asramaOptions.find((c: any) => c.value === field.value)}
-                                                                            value={asramaValue}
-                                                                        />
-                                                                    </div>
-                                                                </FormControl>
-                                                                <FormMessage />
-                                                            </div>
-                                                        </FormItem>
-                                                    )}
-                                                />
-                                                <FormField
-                                                    control={form.control}
-                                                    name="keluhans"
-                                                    render={({ field }) => (
-                                                        <FormItem className="flex">
-                                                            <FormLabel className="w-32 py-2">Keluhan</FormLabel>
-                                                            <div className={`${form.formState.errors.keluhans ? 'has-error' : ''} w-full`}>
-                                                                <FormControl className="">
-                                                                    {/* <input {...field} type="text" placeholder="Asrama" className={`form-input w-full text-base`} /> */}
-                                                                    <div className="custom-select">
-                                                                        <CreatableSelect
-                                                                            {...field}
-                                                                            classNamePrefix="addl-class"
-                                                                            options={keluhanOptions}
-                                                                            value={keluhanOptions.find((c: any) => c.value === field.value)}
-                                                                            // value={keluhanValue}
-                                                                            onChange={(val) => {
-                                                                                const values = val.map((item) => item.value);
-                                                                                // handleCreateKeluahn(values);
-                                                                                // console.log(values);
-                                                                                field.onChange(values);
-                                                                            }}
-                                                                            onCreateOption={(inputValue) => handleCreateKeluhan(inputValue)}
-                                                                            isMulti
-                                                                        />
-                                                                    </div>
-                                                                </FormControl>
-                                                                <FormMessage />
-                                                            </div>
-                                                        </FormItem>
-                                                    )}
-                                                />
-                                                <FormField
-                                                    control={form.control}
-                                                    name="description"
-                                                    render={({ field }) => (
-                                                        <FormItem className="flex">
-                                                            <FormLabel className="w-32 py-2">Description</FormLabel>
-                                                            <div className={`${form.formState.errors.description ? 'has-error' : ''} w-full`}>
-                                                                <FormControl className="">
-                                                                    <input {...field} type="text" placeholder="Keterangan" className={`form-input w-full text-base`} />
-                                                                </FormControl>
-                                                                <FormMessage />
-                                                            </div>
-                                                        </FormItem>
-                                                    )}
-                                                />
-                                                <FormField
-                                                    control={form.control}
-                                                    name="room"
-                                                    render={({ field }) => (
-                                                        <FormItem className="flex">
-                                                            <FormLabel className="w-32 py-2">Ruang</FormLabel>
-                                                            <div className={`${form.formState.errors.room ? 'has-error' : ''} w-full`}>
-                                                                <FormControl className="">
-                                                                    <input {...field} type="text" placeholder="Asrama" className={`form-input w-full text-base`} />
-                                                                </FormControl>
-                                                                <FormMessage />
-                                                            </div>
-                                                        </FormItem>
-                                                    )}
-                                                />
-                                            </form>
-                                        </Form>
-                                        <div className="mt-8 flex items-center justify-end">
-                                            <button type="button" className="btn btn-outline-danger" onClick={() => handleModalClose()}>
-                                                Discard
-                                            </button>
-                                            <button type="submit" form="createMaster" className="btn btn-primary ltr:ml-4 rtl:mr-4">
-                                                Save
-                                            </button>
-                                        </div>
+                                        <FormInap type={type} kelas={kelas} asrama={asrama} keluhan={keluhans} modalClose={handleModalClose} />
                                     </div>
                                 </Dialog.Panel>
                             </Transition.Child>

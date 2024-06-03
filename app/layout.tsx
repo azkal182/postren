@@ -59,11 +59,11 @@ const nunito = Nunito({
     variable: '--font-nunito',
 });
 
-export default async function RootLayout({ children }: { children: React.ReactNode }) {
-    const session = await auth();
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+    // const session = await auth();
 
     return (
-        <SessionProvider session={session}>
+        <SessionProvider>
             <html lang="en">
                 <body className={nunito.variable}>
                     <NextTopLoader showSpinner={false} />

@@ -60,7 +60,7 @@ export const CreateMaster = z.object({
     asramaId: z.string(),
     description: z.string().optional(),
     room: z.string(),
-    keluhans: z.string().array(),
+    keluhans: z.string().array().min(1),
 })
 
 export const ChangePasswordSchema = z.object({

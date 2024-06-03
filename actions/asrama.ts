@@ -14,14 +14,18 @@ const getAsrama = async (type?: any) => {
 }
 
 const createAsrama = async (name: string, type: any) => {
-    const kelas = await db.asrama.create({
-        data: {
-            name: name.toUpperCase(),
-            sex: type
-        }
-    })
-    revalidateTag("asrama")
-    return kelas
+    try {
+        const asrama = await db.asrama.create({
+            data: {
+                name: name.toUpperCase(),
+                sex: type
+            }
+        })
+
+        return { success: true, data: asrama }
+    } catch (error) {
+        throw new Error("Error create asrama");
+    }
 }
 
 

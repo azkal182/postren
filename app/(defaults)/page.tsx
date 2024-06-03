@@ -71,9 +71,6 @@ async function page() {
         keluhan: keluhanCounts,
     };
 
-    console.log(finalResult);
-    console.log(master);
-
     return (
         <div>
             <div className="mb-6 grid grid-cols-1 gap-6 text-white sm:grid-cols-2 xl:grid-cols-4">
@@ -121,15 +118,16 @@ async function page() {
                     </div>
                     <div className="mt-5 flex items-center">
                         <div className="text-3xl font-bold ltr:mr-3 rtl:ml-3"> {userCount} </div>
-                        <div className="badge bg-white/30">- 2.35% </div>
+                        {/* <div className="badge bg-white/30">- 2.35% </div> */}
                     </div>
-                    <div className="mt-5 flex items-center font-semibold">
+                    {/* <div className="mt-5 flex items-center font-semibold">
                         <IconEye className="shrink-0 ltr:mr-2 rtl:ml-2" />
                         Last Week 84,709
-                    </div>
+                    </div> */}
                 </div>
 
                 {/*  Time On-Site */}
+                {/*
                 <div className="panel bg-gradient-to-r from-blue-500 to-blue-400">
                     <div className="flex justify-between">
                         <div className="text-md font-semibold ltr:mr-1 rtl:ml-1">Time On-Site</div>
@@ -155,8 +153,9 @@ async function page() {
                         Last Week 37,894
                     </div>
                 </div>
-
+                */}
                 {/* Bounce Rate */}
+                {/*
                 <div className="panel bg-gradient-to-r from-fuchsia-500 to-fuchsia-400">
                     <div className="flex justify-between">
                         <div className="text-md font-semibold ltr:mr-1 rtl:ml-1">Bounce Rate</div>
@@ -182,6 +181,7 @@ async function page() {
                         Last Week 50.01%
                     </div>
                 </div>
+                */}
             </div>
 
             <div className="mb-6 grid grid-cols-1 gap-6 text-white xl:grid-cols-2">

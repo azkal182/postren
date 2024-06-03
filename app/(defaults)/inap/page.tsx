@@ -16,11 +16,8 @@ const InapPage = async ({
     const query = searchParams?.search || '';
     const session = await auth();
     const type = session?.user?.type;
-    console.log(type);
 
     const [master, asrama, kelas, keluhan] = await Promise.all([getInap(query, type), getAsrama(type), getKelas(type), getKeluhans()]);
-
-    // console.log(master);
 
     return (
         <div>

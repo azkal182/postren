@@ -10,12 +10,16 @@ const getKeluhans = async () => {
 }
 
 const createKeluhan = async (name: string) => {
-    const keluhans = await db.keluhan.create({
-        data: {
-            name: name.toUpperCase()
-        }
-    })
-    revalidateTag("keluhan")
-    return keluhans
+    try {
+        const keluhans = await db.keluhan.create({
+            data: {
+                name: name.toUpperCase()
+            }
+        })
+        return { success: true, data: keluhans }
+    } catch (error) {
+        throw new Error("Error create keluhan");
+    }
+
 }
 export { getKeluhans, createKeluhan }

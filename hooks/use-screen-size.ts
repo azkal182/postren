@@ -28,8 +28,19 @@ const useScreenSize = () => {
             window.removeEventListener('resize', handleResize);
         };
     }, []);
+    const { width } = screenSize
+    let screen: any;
 
-    return screenSize;
+    if (width < 600) {
+        screen = 'sm';
+    } else if (width >= 600 && width < 960) {
+        screen = 'md';
+    } else {
+        screen = 'lg';
+    }
+
+
+    return screen;
 };
 
 export default useScreenSize;
