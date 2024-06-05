@@ -40,11 +40,11 @@ const reformat = (array: any) => {
 const FormInap = ({ kelas, asrama, keluhan, type, modalClose }: { kelas: any; asrama: any; keluhan: any; type: any; modalClose: any }) => {
     const [selectedValue, setSelectedValue] = useState<namesOption | null | undefined>(null);
     const [kelasOptions, setKelasOptions] = useState<any>(reformat(kelas));
-    const [selectedKelas, setSelectedKelas] = useState<any>({});
+    const [selectedKelas, setSelectedKelas] = useState<any>(null);
     const [kelasLoading, setKelasLoading] = useState(false);
 
     const [asramaOptions, setAsramaOptions] = useState<any>(reformat(asrama));
-    const [selectedAsrama, setSelectedAsrama] = useState<any>({});
+    const [selectedAsrama, setSelectedAsrama] = useState<any>(null);
     const [asramaLoading, setAsramaLoading] = useState(false);
 
     const [keluhanOptions, setKeluhanOptions] = useState<any>(reformat(keluhan));
@@ -217,7 +217,7 @@ const FormInap = ({ kelas, asrama, keluhan, type, modalClose }: { kelas: any; as
                                                 isLoading={kelasLoading}
                                                 onChange={(e) => {
                                                     setSelectedKelas(e);
-                                                    field.onChange(e.value);
+                                                    field.onChange(e?.value);
                                                 }}
                                                 onCreateOption={handleCreateKelas}
                                                 options={kelasOptions}
@@ -247,7 +247,7 @@ const FormInap = ({ kelas, asrama, keluhan, type, modalClose }: { kelas: any; as
                                                 isLoading={asramaLoading}
                                                 onChange={(e) => {
                                                     setSelectedAsrama(e);
-                                                    field.onChange(e.value);
+                                                    field.onChange(e?.value);
                                                 }}
                                                 onCreateOption={handleCreateAsrama}
                                                 options={asramaOptions}

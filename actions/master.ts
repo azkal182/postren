@@ -41,8 +41,12 @@ const getInap = async (query?: string, type?: any) => {
     return transformedArray
 }
 
-const getMaster = async () => {
+const getMaster = async (query?: string, type?: any) => {
     const master = await db.master.findMany({
+        where: {
+            ...(query && { students: { name: { contains: query, mode: "insensitive" } } }),
+            ...(type && type !== "ALL" && { students: { sex: type } }),
+        },
         include: {
             students: true,
             asrama: true,
@@ -157,7 +161,9 @@ const returnMaster = async (id?: any, returnTo?: any) => {
 const getMasterByMonth = async (month: string, year: string, type: any) => {
     // Menghitung tanggal awal bulan
     const startDate = new Date(`${year}-${month}-01`);
-    startDate.setDate(startDate.getDate() + 1)
+    // startDate.setDate(startDate.getDate() + 1)
+    console.log(startDate);
+
 
 
 
@@ -165,6 +171,9 @@ const getMasterByMonth = async (month: string, year: string, type: any) => {
     const endDate = new Date(startDate);
     endDate.setMonth(endDate.getMonth() + 1);
     endDate.setDate(endDate.getDate() - 1);
+
+    console.log(endDate);
+
 
 
 

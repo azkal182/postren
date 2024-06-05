@@ -1,7 +1,8 @@
 import React from 'react';
 import AsramaContent from './asrama-content';
-import { getInap } from '@/actions/master';
+import { getMaster } from '@/actions/master';
 import { auth } from '@/auth';
+import { getAsrama } from '@/actions/asrama';
 
 const Asrama = async ({
     searchParams,
@@ -13,13 +14,12 @@ const Asrama = async ({
     const query = searchParams?.search || '';
     const session = await auth();
     const type = session?.user?.type;
-    const data = await getInap(query, type);
-    console.log(data);
+    const data = await getMaster(query, type);
+    const asrama = await getAsrama(type);
 
     return (
         <div>
-            <h1 className="text-center text-lg font-bold">DATA SANTRI</h1>
-            <AsramaContent />
+            <AsramaContent data={data} asrama={asrama} />
         </div>
     );
 };
