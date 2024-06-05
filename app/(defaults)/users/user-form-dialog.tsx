@@ -134,6 +134,7 @@ const UserFormDialog = ({ user, isOpen, onClose }: { user?: any; isOpen: boolean
                                                                             <option>Select Role</option>
                                                                             <option value={'ADMIN'}>ADMIN</option>
                                                                             <option value={'USER'}>USER</option>
+                                                                            <option value={'ASRAMA'}>ASRAMA</option>
                                                                         </select>
                                                                     </FormControl>
                                                                     <FormMessage />
@@ -253,6 +254,7 @@ const UserFormDialog = ({ user, isOpen, onClose }: { user?: any; isOpen: boolean
                                                                             <option>Select Role</option>
                                                                             <option value={'ADMIN'}>ADMIN</option>
                                                                             <option value={'USER'}>USER</option>
+                                                                            <option value={'ASRAMA'}>ASRAMA</option>
                                                                         </select>
                                                                     </FormControl>
                                                                     <FormMessage />

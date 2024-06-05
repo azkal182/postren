@@ -24,7 +24,7 @@ export const AddUserSchema = z.object({
     username: z.string().min(1),
     password: z.string().min(4),
     c_password: z.string().min(4),
-    role: z.enum(["ADMIN", "USER"]),
+    role: z.enum(["ADMIN", "USER", "ASRAMA"]),
     type: z.enum(["LK", "PR", "ALL"])
 }).refine((data) => data.password === data.c_password, {
     path: ['c_password'],
@@ -35,7 +35,7 @@ export const EditUserSchema = z.object({
     id: z.string(),
     name: z.string().min(1),
     username: z.string().min(1),
-    role: z.enum(["ADMIN", "USER"]),
+    role: z.enum(["ADMIN", "USER", "ASRAMA"]),
     type: z.enum(["LK", "PR", "ALL"])
 })
 

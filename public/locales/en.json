@@ -1,8 +1,9 @@
 {
     "dashboard": "Dashboard",
-    "report":"Report",
-    "saving":"Saving",
-    "student data":"Student Data",
-    "users":"Users",
-    "add user":"Add User"
+    "report": "Report",
+    "saving": "Saving",
+    "student data": "Student Data",
+    "users": "Users",
+    "add user": "Add User",
+    "asrama": "Asrama"
 }

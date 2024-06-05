@@ -34,7 +34,7 @@ import IconMenuMore from '@/components/icon/menu/icon-menu-more';
 import { usePathname, useRouter } from 'next/navigation';
 import { getTranslation } from '@/i18n';
 import { signOut } from 'next-auth/react';
-import { useCurrentUser } from '@/hooks/use-current-user';
+import { useCurrentSession } from '@/hooks/use-current-session';
 
 const Header = () => {
     const pathname = usePathname();
@@ -82,7 +82,7 @@ const Header = () => {
         router.refresh();
     };
 
-    const user = useCurrentUser();
+    const { session } = useCurrentSession();
 
     return (
         <header className={`z-40 ${themeConfig.semidark && themeConfig.menu === 'horizontal' ? 'dark' : ''}`}>
@@ -181,7 +181,7 @@ const Header = () => {
                                         <div className="flex items-center px-4 py-4">
                                             <img className="h-10 w-10 rounded-md object-cover" src="/assets/images/user-profile.jpeg" alt="userProfile" />
                                             <div className="truncate ltr:pl-4 rtl:pr-4">
-                                                <h4 className="text-base">{user?.name}</h4>
+                                                <h4 className="text-base">{session?.user?.name}</h4>
                                                 {/* <button type="button" className="text-black/60 hover:text-primary dark:text-dark-light/60 dark:hover:text-white">
                                                     johndoe@gmail.com
                                                 </button> */}

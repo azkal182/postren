@@ -25,6 +25,7 @@ model User {
 enum RoleUser {
     ADMIN
     USER
+    ASRAMA
 }
 
 enum TypeUser {

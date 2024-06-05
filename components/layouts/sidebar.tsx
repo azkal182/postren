@@ -34,10 +34,10 @@ import IconMenuDocumentation from '@/components/icon/menu/icon-menu-documentatio
 import { usePathname } from 'next/navigation';
 import { getTranslation } from '@/i18n';
 import IconUsers from '../icon/icon-users';
-import { useCurrentUser } from '@/hooks/use-current-user';
 import IconBookmark from '../icon/icon-bookmark';
 import IconDollarSign from '../icon/icon-dollar-sign';
 import IconHeart from '../icon/icon-heart';
+import { useCurrentSession } from '@/hooks/use-current-session';
 
 const Sidebar = () => {
     const dispatch = useDispatch();
@@ -52,7 +52,7 @@ const Sidebar = () => {
             return oldValue === value ? '' : value;
         });
     };
-    const session = useCurrentUser();
+    const { session } = useCurrentSession();
 
     useEffect(() => {
         const selector = document.querySelector('.sidebar ul a[href="' + window.location.pathname + '"]');
@@ -110,103 +110,90 @@ const Sidebar = () => {
                     </div>
                     <PerfectScrollbar className="relative h-[calc(100vh-80px)]">
                         <ul className="relative space-y-0.5 p-4 py-0 font-semibold">
-                            {/* <li className="menu nav-item">
-                                <button type="button" className={`${currentMenu === 'dashboard' ? 'active' : ''} nav-link group w-full`} onClick={() => toggleMenu('dashboard')}>
-                                    <div className="flex items-center">
-                                        <IconMenuDashboard className="shrink-0 group-hover:!text-primary" />
-                                        <span className="text-black dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">{t('dashboard')}</span>
-                                    </div>
-
-                                    <div className={currentMenu !== 'dashboard' ? '-rotate-90 rtl:rotate-90' : ''}>
-                                        <IconCaretDown />
-                                    </div>
-                                </button>
-
-                                <AnimateHeight duration={300} height={currentMenu === 'dashboard' ? 'auto' : 0}>
-                                    <ul className="sub-menu text-gray-500">
-                                        <li>
-                                            <Link href="/">{t('sales')}</Link>
-                                        </li>
-                                        <li>
-                                            <Link href="/analytics">{t('analytics')}</Link>
-                                        </li>
-                                        <li>
-                                            <Link href="/finance">{t('finance')}</Link>
-                                        </li>
-                                        <li>
-                                            <Link href="/crypto">{t('crypto')}</Link>
+                            {session?.user?.role === 'ASRAMA' ? (
+                                <li className="nav-item">
+                                    <ul>
+                                        <li className="nav-item">
+                                            <Link href="/asrama" className="group">
+                                                <div className="flex items-center">
+                                                    <IconMenuDashboard className="shrink-0 group-hover:!text-primary" />
+                                                    <span className="text-black dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">{t('asrama')}</span>
+                                                </div>
+                                            </Link>
                                         </li>
                                     </ul>
-                                </AnimateHeight>
-                            </li> */}
-
-                            <li className="nav-item">
-                                <ul>
-                                    <li className="nav-item">
-                                        <Link href="/" className="group">
-                                            <div className="flex items-center">
-                                                <IconMenuDashboard className="shrink-0 group-hover:!text-primary" />
-                                                <span className="text-black dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">{t('dashboard')}</span>
-                                            </div>
-                                        </Link>
-                                    </li>
-                                </ul>
-                            </li>
-
-                            <h2 className="-mx-4 mb-1 flex items-center bg-white-light/30 px-7 py-3 font-extrabold uppercase dark:bg-dark dark:bg-opacity-[0.08]">
-                                <IconMinus className="hidden h-5 w-4 flex-none" />
-                                <span>{t('apps')}</span>
-                            </h2>
-
-                            <li className="nav-item">
-                                <ul>
-                                    <li className="nav-item">
-                                        <Link href="/inap" className="group">
-                                            <div className="flex items-center">
-                                                <IconHeart className="shrink-0 group-hover:!text-primary" />
-                                                <span className="text-black dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">{t('student data')}</span>
-                                            </div>
-                                        </Link>
-                                    </li>
-
-                                    <li className="nav-item">
-                                        <Link href="/tabungan" className="group">
-                                            <div className="flex items-center">
-                                                <IconDollarSign className="shrink-0 group-hover:!text-primary" />
-                                                <span className="text-black dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">{t('saving')}</span>
-                                            </div>
-                                        </Link>
-                                    </li>
-
-                                    <li className="nav-item">
-                                        <Link href="/report" className="group">
-                                            <div className="flex items-center">
-                                                <IconBookmark className="shrink-0 group-hover:!text-primary" />
-                                                <span className="text-black dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">{t('report')}</span>
-                                            </div>
-                                        </Link>
-                                    </li>
-                                </ul>
-                            </li>
-                            {session?.role === 'ADMIN' && (
+                                </li>
+                            ) : (
                                 <>
-                                    <h2 className="-mx-4 mb-1 flex items-center bg-white-light/30 px-7 py-3 font-extrabold uppercase dark:bg-dark dark:bg-opacity-[0.08]">
-                                        <IconMinus className="hidden h-5 w-4 flex-none" />
-                                        <span>{t('admin')}</span>
-                                    </h2>
-
                                     <li className="nav-item">
                                         <ul>
                                             <li className="nav-item">
-                                                <Link href="/users" className="group">
+                                                <Link href="/" className="group">
                                                     <div className="flex items-center">
-                                                        <IconUsers className="shrink-0 group-hover:!text-primary" />
-                                                        <span className="text-black dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">{t('users')}</span>
+                                                        <IconMenuDashboard className="shrink-0 group-hover:!text-primary" />
+                                                        <span className="text-black dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">{t('dashboard')}</span>
                                                     </div>
                                                 </Link>
                                             </li>
                                         </ul>
                                     </li>
+
+                                    <h2 className="-mx-4 mb-1 flex items-center bg-white-light/30 px-7 py-3 font-extrabold uppercase dark:bg-dark dark:bg-opacity-[0.08]">
+                                        <IconMinus className="hidden h-5 w-4 flex-none" />
+                                        <span>{t('apps')}</span>
+                                    </h2>
+
+                                    <li className="nav-item">
+                                        <ul>
+                                            <li className="nav-item">
+                                                <Link href="/inap" className="group">
+                                                    <div className="flex items-center">
+                                                        <IconHeart className="shrink-0 group-hover:!text-primary" />
+                                                        <span className="text-black dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">{t('student data')}</span>
+                                                    </div>
+                                                </Link>
+                                            </li>
+
+                                            <li className="nav-item">
+                                                <Link href="/tabungan" className="group">
+                                                    <div className="flex items-center">
+                                                        <IconDollarSign className="shrink-0 group-hover:!text-primary" />
+                                                        <span className="text-black dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">{t('saving')}</span>
+                                                    </div>
+                                                </Link>
+                                            </li>
+
+                                            <li className="nav-item">
+                                                <Link href="/report" className="group">
+                                                    <div className="flex items-center">
+                                                        <IconBookmark className="shrink-0 group-hover:!text-primary" />
+                                                        <span className="text-black dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">{t('report')}</span>
+                                                    </div>
+                                                </Link>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    {session?.user?.role === 'ADMIN' && (
+                                        <>
+                                            <h2 className="-mx-4 mb-1 flex items-center bg-white-light/30 px-7 py-3 font-extrabold uppercase dark:bg-dark dark:bg-opacity-[0.08]">
+                                                <IconMinus className="hidden h-5 w-4 flex-none" />
+                                                <span>{t('admin')}</span>
+                                            </h2>
+
+                                            <li className="nav-item">
+                                                <ul>
+                                                    <li className="nav-item">
+                                                        <Link href="/users" className="group">
+                                                            <div className="flex items-center">
+                                                                <IconUsers className="shrink-0 group-hover:!text-primary" />
+                                                                <span className="text-black dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">{t('users')}</span>
+                                                            </div>
+                                                        </Link>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </>
+                                    )}
                                 </>
                             )}
                         </ul>
