@@ -1,6 +1,6 @@
 import React from 'react';
 import Table from './table';
-import { getInap, getMaster } from '@/actions/master';
+import { getInap } from '@/actions/master';
 import { getAsrama } from '@/actions/asrama';
 import { getKelas } from '@/actions/kelas';
 import { getKeluhans } from '@/actions/keluhan';

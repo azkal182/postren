@@ -8,6 +8,7 @@ import { auth } from '@/auth';
 import ChartAsramaComponent from './chart-asrama';
 import _ from 'lodash';
 import ChartKeluhanComponent from './chart-keluhan';
+import Link from 'next/link';
 
 export const metadata: Metadata = {
     title: 'Dashboard',
@@ -74,10 +75,10 @@ async function page() {
     return (
         <div>
             <div className="mb-6 grid grid-cols-1 gap-6 text-white sm:grid-cols-2 xl:grid-cols-4">
-                <div className="panel bg-gradient-to-r from-cyan-500 to-cyan-400">
+                <Link href={'/inap'} className="panel bg-gradient-to-r from-cyan-500 to-cyan-400">
                     <div className="flex justify-between">
                         <div className="text-md font-semibold ltr:mr-1 rtl:ml-1">Data UKS</div>
-                        <div className="dropdown">
+                        {/* <div className="dropdown">
                             <Dropdown offset={[0, 5]} placement={`bottom-start`} btnClassName="hover:opacity-80" button={<IconHorizontalDots className="opacity-70 hover:opacity-80" />}>
                                 <ul className="text-black dark:text-white-dark">
                                     <li>
@@ -88,43 +89,40 @@ async function page() {
                                     </li>
                                 </ul>
                             </Dropdown>
-                        </div>
+                        </div> */}
                     </div>
                     <div className="mt-5 flex items-center">
                         <div className="text-3xl font-bold ltr:mr-3 rtl:ml-3"> {masterCount} </div>
-                        <div className="badge bg-white/30">+ 2.35% </div>
                     </div>
-                    <div className="mt-5 flex items-center font-semibold">
-                        <IconEye className="shrink-0 ltr:mr-2 rtl:ml-2" />
-                        Last Week 44,700
-                    </div>
-                </div>
+                </Link>
                 {/* Sessions */}
-                <div className="panel bg-gradient-to-r from-violet-500 to-violet-400">
-                    <div className="flex justify-between">
-                        <div className="text-md font-semibold ltr:mr-1 rtl:ml-1">Users</div>
-                        <div className="dropdown">
-                            <Dropdown offset={[0, 5]} placement={`bottom-start`} btnClassName="hover:opacity-80" button={<IconHorizontalDots className="opacity-70 hover:opacity-80" />}>
-                                <ul className="text-black dark:text-white-dark">
-                                    <li>
-                                        <button type="button">View Report</button>
-                                    </li>
-                                    <li>
-                                        <button type="button">Edit Report</button>
-                                    </li>
-                                </ul>
-                            </Dropdown>
+                {session?.user?.role === 'ADMIN' && (
+                    <div className="panel bg-gradient-to-r from-violet-500 to-violet-400">
+                        <div className="flex justify-between">
+                            <div className="text-md font-semibold ltr:mr-1 rtl:ml-1">Users</div>
+                            <div className="dropdown">
+                                <Dropdown offset={[0, 5]} placement={`bottom-start`} btnClassName="hover:opacity-80" button={<IconHorizontalDots className="opacity-70 hover:opacity-80" />}>
+                                    <ul className="text-black dark:text-white-dark">
+                                        <li>
+                                            <button type="button">View Report</button>
+                                        </li>
+                                        <li>
+                                            <button type="button">Edit Report</button>
+                                        </li>
+                                    </ul>
+                                </Dropdown>
+                            </div>
                         </div>
-                    </div>
-                    <div className="mt-5 flex items-center">
-                        <div className="text-3xl font-bold ltr:mr-3 rtl:ml-3"> {userCount} </div>
-                        {/* <div className="badge bg-white/30">- 2.35% </div> */}
-                    </div>
-                    {/* <div className="mt-5 flex items-center font-semibold">
+                        <div className="mt-5 flex items-center">
+                            <div className="text-3xl font-bold ltr:mr-3 rtl:ml-3"> {userCount} </div>
+                            {/* <div className="badge bg-white/30">- 2.35% </div> */}
+                        </div>
+                        {/* <div className="mt-5 flex items-center font-semibold">
                         <IconEye className="shrink-0 ltr:mr-2 rtl:ml-2" />
                         Last Week 84,709
                     </div> */}
-                </div>
+                    </div>
+                )}
 
                 {/*  Time On-Site */}
                 {/*

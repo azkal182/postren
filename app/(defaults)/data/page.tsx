@@ -14,7 +14,7 @@ const Asrama = async ({
     const query = searchParams?.search || '';
     const session = await auth();
     const type = session?.user?.type;
-    const data = await getMaster(query, type);
+    const data = await getMaster(query, type, true);
     const asrama = await getAsrama(type);
 
     return (

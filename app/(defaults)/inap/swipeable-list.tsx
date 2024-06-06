@@ -7,7 +7,7 @@ import React, { Fragment, useState } from 'react';
 import { LeadingActions, SwipeableList, SwipeableListItem, SwipeAction, TrailingActions } from 'react-swipeable-list';
 import Swal from 'sweetalert2';
 
-const SwipeableListPage = ({ data, kelas, asrama, keluhans }: { data: any; kelas: any; asrama: any; keluhans: any }) => {
+const SwipeableListPage = ({ data }: { data: any }) => {
     const [modalInfo, setModalInfo] = useState(false);
     const [modalConfirm, setModalConfirm] = useState(false);
     const [user, setUser] = useState<any>({});

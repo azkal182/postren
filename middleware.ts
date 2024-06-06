@@ -12,7 +12,7 @@ export default auth(async (req) => {
     const session = await Session();
     const role = session?.user?.role
 
-    const asramaRoute = nextUrl.pathname.startsWith('/asrama')
+    const asramaRoute = nextUrl.pathname.startsWith('/data')
     const isLoggedIn = !!req.auth;
     const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
     const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
@@ -25,7 +25,7 @@ export default auth(async (req) => {
     if (isAuthRoute) {
         if (isLoggedIn) {
             if (role === "ASRAMA") {
-                return Response.redirect(new URL("/asrama", nextUrl));
+                return Response.redirect(new URL("/data", nextUrl));
             }
             return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
         }
@@ -37,7 +37,7 @@ export default auth(async (req) => {
     }
 
     if (role === "ASRAMA" && !asramaRoute) {
-        return Response.redirect(new URL("/asrama", nextUrl));
+        return Response.redirect(new URL("/data", nextUrl));
     }
 });
 

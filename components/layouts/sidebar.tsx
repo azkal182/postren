@@ -114,10 +114,10 @@ const Sidebar = () => {
                                 <li className="nav-item">
                                     <ul>
                                         <li className="nav-item">
-                                            <Link href="/asrama" className="group">
+                                            <Link href="/data" className="group">
                                                 <div className="flex items-center">
-                                                    <IconMenuDashboard className="shrink-0 group-hover:!text-primary" />
-                                                    <span className="text-black dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">{t('asrama')}</span>
+                                                    <IconMenuDatatables className="shrink-0 group-hover:!text-primary" />
+                                                    <span className="text-black dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">{t('data')}</span>
                                                 </div>
                                             </Link>
                                         </li>
@@ -159,6 +159,15 @@ const Sidebar = () => {
                                                     <div className="flex items-center">
                                                         <IconDollarSign className="shrink-0 group-hover:!text-primary" />
                                                         <span className="text-black dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">{t('saving')}</span>
+                                                    </div>
+                                                </Link>
+                                            </li>
+
+                                            <li className="nav-item">
+                                                <Link href="/data" className="group">
+                                                    <div className="flex items-center">
+                                                        <IconMenuDatatables className="shrink-0 group-hover:!text-primary" />
+                                                        <span className="text-black dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">{t('data')}</span>
                                                     </div>
                                                 </Link>
                                             </li>

@@ -7,6 +7,8 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { ContextMenuTrigger } from 'rctx-contextmenu';
 import React, { ChangeEvent, useState } from 'react';
 import * as _ from 'lodash';
+import SwipeableListPage from './swipeable-list';
+import useScreenSize from '@/hooks/use-screen-size';
 
 const statusPriority = {
     null: 1,
@@ -18,7 +20,7 @@ const statusPriority = {
 const AsramaContent = ({ data, asrama }: { data: any; asrama: any }) => {
     const [statusSelected, setStatusSelected] = useState<string[]>([]);
     const [searchQuery, setSearchQuery] = useState('');
-    // const status: string[] = ['ASRAMA', 'RS', 'RUMAH'];
+    const screenSize = useScreenSize();
 
     const handleCheckboxChange = (event: ChangeEvent<HTMLInputElement>) => {
         const value = event.target.value;
@@ -106,55 +108,62 @@ const AsramaContent = ({ data, asrama }: { data: any; asrama: any }) => {
                         </PopoverContent>
                     </Popover>
                 </div>
-                <div className="table-responsive mb-5 mt-6">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Status</th>
 
-                                <th>Name</th>
-                                <th>Address</th>
-                                <th>Asrama</th>
-                                <th>Kelas</th>
-                                <th>Keluhan</th>
-                                <th>Masuk</th>
-                                <th>Keluar</th>
-                                <th>Lama</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {filteredData.map((item: any, i: number) => {
-                                const calculateDay = item.returnAt ? calculateDays(item.createdAt, item.returnAt) : calculateDaysFromNow(item.createdAt);
-                                return (
-                                    <tr
-                                        key={item.id}
-                                        className={cn(
-                                            item?.returnTo === null
-                                                ? 'border-dark-dark-light bg-dark-dark-light'
-                                                : item?.returnTo === 'RUMAH'
-                                                ? 'border-success/20 bg-success/20'
-                                                : item?.returnTo === 'RS'
-                                                ? 'border-danger/20 bg-danger/20 '
-                                                : 'border-primary/20 bg-primary/20'
-                                        )}
-                                    >
-                                        <td>{i + 1}</td>
-                                        <td>{item?.returnTo ? item?.returnTo : 'UKS'}</td>
-                                        <td className="whitespace-nowrap">{item.name}</td>
-                                        <td>{item.address.split(',')[0]}</td>
-                                        <td>{item.asramaId}</td>
-                                        <td>{item.kelasId}</td>
-                                        <td>{item.keluhans.join(', ')}</td>
-                                        <td className="whitespace-nowrap">{dateFormat(item.createdAt)}</td>
-                                        <td className="whitespace-nowrap">{item?.returnAt ? dateFormat(item.returnAt) : '-'}</td>
-                                        <td>{calculateDay} Hari</td>
-                                    </tr>
-                                );
-                            })}
-                        </tbody>
-                    </table>
-                </div>
+                {screenSize !== 'sm' ? (
+                    <div className="table-responsive mb-5 mt-6">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Status</th>
+
+                                    <th>Name</th>
+                                    <th>Address</th>
+                                    <th>Asrama</th>
+                                    <th>Kelas</th>
+                                    <th>Keluhan</th>
+                                    <th>Masuk</th>
+                                    <th>Keluar</th>
+                                    <th>Lama</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {filteredData.map((item: any, i: number) => {
+                                    const calculateDay = item.returnAt ? calculateDays(item.createdAt, item.returnAt) : calculateDaysFromNow(item.createdAt);
+                                    return (
+                                        <tr
+                                            key={item.id}
+                                            className={cn(
+                                                item?.returnTo === null
+                                                    ? 'border-dark-dark-light bg-dark-dark-light'
+                                                    : item?.returnTo === 'RUMAH'
+                                                    ? 'border-primary/20 bg-primary/20'
+                                                    : item?.returnTo === 'RS'
+                                                    ? 'border-danger/20 bg-danger/20 '
+                                                    : ' border-success/20 bg-success/20'
+                                            )}
+                                        >
+                                            <td>{i + 1}</td>
+                                            <td>{item?.returnTo ? item?.returnTo : 'UKS'}</td>
+                                            <td className="whitespace-nowrap">{item.name}</td>
+                                            <td>{item.address.split(',')[0]}</td>
+                                            <td>{item.asramaId}</td>
+                                            <td>{item.kelasId}</td>
+                                            <td>{item.keluhans.join(', ')}</td>
+                                            <td className="whitespace-nowrap">{dateFormat(item.createdAt)}</td>
+                                            <td className="whitespace-nowrap">{item?.returnAt ? dateFormat(item.returnAt) : '-'}</td>
+                                            <td>{calculateDay} Hari</td>
+                                        </tr>
+                                    );
+                                })}
+                            </tbody>
+                        </table>
+                    </div>
+                ) : (
+                    <div className="mt-6">
+                        <SwipeableListPage data={filteredData} />
+                    </div>
+                )}
             </div>
         </div>
     );

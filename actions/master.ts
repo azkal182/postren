@@ -41,11 +41,21 @@ const getInap = async (query?: string, type?: any) => {
     return transformedArray
 }
 
-const getMaster = async (query?: string, type?: any) => {
+const getMaster = async (query?: string, type?: any, amonth?: any) => {
+    const toDate = new Date()
+    const fromDate = new Date(toDate)
+    fromDate.setDate(fromDate.getDate() - 30)
+
     const master = await db.master.findMany({
         where: {
             ...(query && { students: { name: { contains: query, mode: "insensitive" } } }),
             ...(type && type !== "ALL" && { students: { sex: type } }),
+            ...(amonth && {
+                createdAt: {
+                    gte: fromDate,
+                    lte: toDate
+                }
+            })
         },
         include: {
             students: true,

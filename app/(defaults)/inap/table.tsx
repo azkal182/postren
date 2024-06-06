@@ -156,7 +156,7 @@ const Table = ({ data, kelas, asrama, keluhans, type }: { data: any; kelas: any;
                         ))}
                     </div>
                 ) : (
-                    <SwipeableListPage data={data} asrama={asrama} kelas={kelas} keluhans={keluhans} />
+                    <SwipeableListPage data={data} />
                 )}
             </div>
             {/* modal  */}
