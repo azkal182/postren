@@ -71,34 +71,32 @@ const FormInap = ({ kelas, asrama, keluhan, type, modalClose }: { kelas: any; as
         });
 
     const createOption = (label: string) => ({
-        label,
-        value: label.toLowerCase().replace(/\W/g, ''),
+        label: label.toUpperCase().replace(/\W/g, ''),
+        value: label.toUpperCase().replace(/\W/g, ''),
     });
 
     const onSubmit = async (values: formCreateMaster) => {
-        console.log(values);
-
-        // createMaster(values).then((val) => {
-        //     if (val.success) {
-        //         const toast = Swal.mixin({
-        //             toast: true,
-        //             position: 'top-end',
-        //             showConfirmButton: false,
-        //             timer: 3000,
-        //             showCloseButton: true,
-        //             customClass: {
-        //                 popup: `color-success`,
-        //             },
-        //         });
-        //         toast.fire({
-        //             title: 'Data Berhasil ditambahkan!',
-        //         });
-        //         handleCloseModal();
-        //         form.reset();
-        //     } else {
-        //         alert('Something went wrong!');
-        //     }
-        // });
+        createMaster(values).then((val) => {
+            if (val.success) {
+                const toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    showCloseButton: true,
+                    customClass: {
+                        popup: `color-success`,
+                    },
+                });
+                toast.fire({
+                    title: 'Data Berhasil ditambahkan!',
+                });
+                handleCloseModal();
+                form.reset();
+            } else {
+                alert('Something went wrong!');
+            }
+        });
     };
 
     const handleCreateKelas = async (values: string) => {
@@ -142,7 +140,8 @@ const FormInap = ({ kelas, asrama, keluhan, type, modalClose }: { kelas: any; as
                 const currentKeluhans = form.getValues('keluhans') || [];
 
                 // Buat array baru dengan data tambahan
-                const updatedKeluhans = [...currentKeluhans, values];
+                const updatedKeluhans = [...currentKeluhans, values.toUpperCase()];
+                console.log({ updatedKeluhans, newOption });
 
                 // Update nilai formulir
                 form.setValue('keluhans', updatedKeluhans);
@@ -281,11 +280,6 @@ const FormInap = ({ kelas, asrama, keluhan, type, modalClose }: { kelas: any; as
                                                 {...field}
                                                 classNamePrefix="addl-class"
                                                 options={keluhanOptions}
-                                                // value={keluhanOptions.find((c: any) => c.value === field.value)}
-                                                // value={[
-                                                //     { label: 'test', value: 'test' },
-                                                //     { label: 'test', value: 'test' },
-                                                // ]}
                                                 value={selectedKeluhan}
                                                 onChange={(val) => {
                                                     const values = val.map((item) => item.value);
