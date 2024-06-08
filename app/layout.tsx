@@ -7,10 +7,11 @@ import { Nunito } from 'next/font/google';
 import { auth } from '@/auth';
 import { SessionProvider } from 'next-auth/react';
 import NextTopLoader from 'nextjs-toploader';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
-const APP_NAME = 'Poskestren';
-const APP_DEFAULT_TITLE = 'Poskestren Dashboard';
-const APP_TITLE_TEMPLATE = '%s | Poskestren Dashboard';
+const APP_NAME = 'Si Sehat';
+const APP_DEFAULT_TITLE = 'Si Sehat Dashboard';
+const APP_TITLE_TEMPLATE = '%s | Si Sehat Dashboard';
 const APP_DESCRIPTION = 'Best PWA app in the world!';
 
 export const metadata: Metadata = {
@@ -25,6 +26,7 @@ export const metadata: Metadata = {
         capable: true,
         statusBarStyle: 'default',
         title: APP_DEFAULT_TITLE,
+        startupImage: './icon.png',
         // startUpImage: [],
     },
     formatDetection: {
@@ -68,6 +70,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <body className={nunito.variable}>
                     <NextTopLoader showSpinner={false} />
                     <ProviderComponent>{children}</ProviderComponent>
+                    <SpeedInsights />
                 </body>
             </html>
         </SessionProvider>
