@@ -48,7 +48,7 @@ const FormInap = ({ kelas, asrama, keluhan, type, modalClose }: { kelas: any; as
     const [asramaLoading, setAsramaLoading] = useState(false);
 
     const [keluhanOptions, setKeluhanOptions] = useState<any>(reformat(keluhan));
-    const [selectedKeluhan, setSelectedKeluhan] = useState<any>({});
+    const [selectedKeluhan, setSelectedKeluhan] = useState<any>([]);
     const [keluhanLoading, setKeluhanLoading] = useState(false);
 
     const handleCloseModal = () => {
@@ -76,27 +76,29 @@ const FormInap = ({ kelas, asrama, keluhan, type, modalClose }: { kelas: any; as
     });
 
     const onSubmit = async (values: formCreateMaster) => {
-        createMaster(values).then((val) => {
-            if (val.success) {
-                const toast = Swal.mixin({
-                    toast: true,
-                    position: 'top-end',
-                    showConfirmButton: false,
-                    timer: 3000,
-                    showCloseButton: true,
-                    customClass: {
-                        popup: `color-success`,
-                    },
-                });
-                toast.fire({
-                    title: 'Data Berhasil ditambahkan!',
-                });
-                handleCloseModal();
-                form.reset();
-            } else {
-                alert('Something went wrong!');
-            }
-        });
+        console.log(values);
+
+        // createMaster(values).then((val) => {
+        //     if (val.success) {
+        //         const toast = Swal.mixin({
+        //             toast: true,
+        //             position: 'top-end',
+        //             showConfirmButton: false,
+        //             timer: 3000,
+        //             showCloseButton: true,
+        //             customClass: {
+        //                 popup: `color-success`,
+        //             },
+        //         });
+        //         toast.fire({
+        //             title: 'Data Berhasil ditambahkan!',
+        //         });
+        //         handleCloseModal();
+        //         form.reset();
+        //     } else {
+        //         alert('Something went wrong!');
+        //     }
+        // });
     };
 
     const handleCreateKelas = async (values: string) => {
@@ -136,8 +138,14 @@ const FormInap = ({ kelas, asrama, keluhan, type, modalClose }: { kelas: any; as
                 const newOption = createOption(values);
                 setKeluhanLoading(false);
                 setKeluhanOptions((prev: any) => [...prev, newOption]);
-                setSelectedKeluhan(newOption);
-                form.setValue('asramaId', values);
+                setSelectedKeluhan((prev: any) => [...prev, newOption]);
+                const currentKeluhans = form.getValues('keluhans') || [];
+
+                // Buat array baru dengan data tambahan
+                const updatedKeluhans = [...currentKeluhans, values];
+
+                // Update nilai formulir
+                form.setValue('keluhans', updatedKeluhans);
             } else {
                 alert('error');
             }
@@ -273,12 +281,15 @@ const FormInap = ({ kelas, asrama, keluhan, type, modalClose }: { kelas: any; as
                                                 {...field}
                                                 classNamePrefix="addl-class"
                                                 options={keluhanOptions}
-                                                value={keluhanOptions.find((c: any) => c.value === field.value)}
-                                                // value={keluhanValue}
+                                                // value={keluhanOptions.find((c: any) => c.value === field.value)}
+                                                // value={[
+                                                //     { label: 'test', value: 'test' },
+                                                //     { label: 'test', value: 'test' },
+                                                // ]}
+                                                value={selectedKeluhan}
                                                 onChange={(val) => {
                                                     const values = val.map((item) => item.value);
-                                                    // handleCreateKeluahn(values);
-                                                    // console.log(values);
+                                                    setSelectedKeluhan(val);
                                                     field.onChange(values);
                                                 }}
                                                 onCreateOption={(inputValue) => handleCreateKeluhan(inputValue)}

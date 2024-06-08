@@ -64,9 +64,7 @@ const deleteUserAction = async (id: string) => {
             where: { id }
         })
         return { success: "user have been deleted!" }
-    } catch (error) {
-        console.log(error);
-        // @ts-ignore
+    } catch (error: any) {
         throw new Error("Error delete user", error.message);
 
 
@@ -93,9 +91,7 @@ const changePasswordAction = async (values: FormTypeChangePasswordUser) => {
             }
         })
         return { success: "change password successfully!" }
-    } catch (error) {
-        console.log(error);
-        // @ts-ignore
+    } catch (error: any) {
         throw new Error("Error change password user", error.message);
 
 

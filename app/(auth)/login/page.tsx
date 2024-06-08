@@ -100,7 +100,7 @@ const CoverLogin = () => {
                                 </Link>
                             </div> */}
                         </div>
-                        <p className="absolute bottom-6 w-full text-center dark:text-white">© {new Date().getFullYear()}.Azkal182 All Rights Reserved.</p>
+                        <p className="absolute bottom-6 w-full text-center dark:text-white">© {new Date().getFullYear()}.Amtsilati Pusat All Rights Reserved.</p>
                     </div>
                 </div>
             </div>

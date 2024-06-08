@@ -77,8 +77,6 @@ const getMaster = async (query?: string, type?: any, amonth?: any) => {
         })
     })
 
-    // console.log(JSON.stringify(transformedArray, null, 2));
-
     revalidatePath('inap')
     return transformedArray
 }
@@ -92,20 +90,7 @@ const createMaster = async (values: FormTypeCreateMaster) => {
     }
 
     const { studentId, name, address, sex, kelasId, asramaId, description, room, keluhans } = validatedFields.data
-    // const student = await db.student.upsert({
-    //     where: {
-    //         id: studentId
-    //     },
-    //     update: {},
-    //     create: {
-    //         id: studentId,
-    //         name,
-    //         address,
-    //         sex
-
-    //     }
-    // })
-    console.log({ asramaId, sex });
+    console.log({ studentId, name, address, sex, kelasId, asramaId, description, room, keluhans });
 
     try {
         await db.master.create({
@@ -171,21 +156,11 @@ const returnMaster = async (id?: any, returnTo?: any) => {
 const getMasterByMonth = async (month: string, year: string, type: any) => {
     // Menghitung tanggal awal bulan
     const startDate = new Date(`${year}-${month}-01`);
-    // startDate.setDate(startDate.getDate() + 1)
-    console.log(startDate);
-
-
-
 
     // Menghitung tanggal akhir bulan
     const endDate = new Date(startDate);
     endDate.setMonth(endDate.getMonth() + 1);
     endDate.setDate(endDate.getDate() - 1);
-
-    console.log(endDate);
-
-
-
 
     try {
         const master = await db.master.findMany({

@@ -1,11 +1,9 @@
 "use server"
 
 import { db } from "@/lib/db"
-import { revalidateTag } from "next/cache"
 
 const getKeluhans = async () => {
     const keluhans = await db.keluhan.findMany()
-    revalidateTag("keluhan")
     return keluhans
 }
 

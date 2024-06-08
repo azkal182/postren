@@ -79,7 +79,7 @@ const ChartKeluhanComponent = ({ data }: { data: any }) => {
     }, []);
     return (
         <div className="panel">
-            <h1 className="text-center font-semibold">Grafik sakit</h1>
+            <h1 className="text-center font-semibold text-dark dark:text-dark-light">Grafik sakit</h1>
             <div className="">
                 {isMounted && (
                     <ReactApexChart series={simpleColumnStacked.series} options={simpleColumnStacked.options} className="overflow-hidden rounded-lg bg-white dark:bg-black" type="bar" height={300} />

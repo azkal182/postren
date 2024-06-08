@@ -1,7 +1,6 @@
 "use server"
 
 import { db } from "@/lib/db"
-import { revalidateTag } from "next/cache"
 
 const getAsrama = async (type?: any) => {
     const asrama = await db.asrama.findMany({
@@ -9,7 +8,6 @@ const getAsrama = async (type?: any) => {
             ...(type && type !== "ALL" && { sex: type }),
         }
     })
-    revalidateTag("asrama")
     return asrama
 }
 

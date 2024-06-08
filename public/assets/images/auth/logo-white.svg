@@ -6,7 +6,7 @@ viewBox="0 0 1168 211"
  xmlns:xlink="http://www.w3.org/1999/xlink">
  <defs>
   <font id="FontID0" horiz-adv-x="722" font-variant="normal" style="fill-rule:nonzero" font-weight="700">
-	<font-face 
+	<font-face
 		font-family="Arial">
 		<font-face-src>
 			<font-face-name name="Arial Bold"/>
@@ -88,6 +88,6 @@ viewBox="0 0 1168 211"
     <path class="fil9" d="M127 100l2 1c0,-1 1,-1 1,-2 -1,-1 -1,-1 -2,-1l-1 2z"/>
    </g>
   </g>
-  <text x="315" y="170"  class="fil10 fnt0">POSTREN</text>
+  <text x="315" y="170"  class="fil10 fnt0">SI SEHAT</text>
  </g>
 </svg>
