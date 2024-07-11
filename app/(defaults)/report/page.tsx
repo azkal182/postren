@@ -158,7 +158,6 @@ import { auth } from '@/auth';
 
 const ReportPage = async () => {
     const session = await auth();
-    console.log({ session });
 
     return (
         <>

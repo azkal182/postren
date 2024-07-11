@@ -184,7 +184,8 @@ const getMasterByMonth = async (month: string, year: string, type: any) => {
                 name: obj.students.name,
                 address: obj.students.address,
                 sex: obj.students.sex,
-                keluhans: obj.keluhans.map(data => data.name)
+                // keluhans: obj.keluhans.map(data => data.name)
+                keluhans: obj.keluhans
             })
         })
 

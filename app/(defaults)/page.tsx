@@ -9,6 +9,10 @@ import ChartAsramaComponent from './chart-asrama';
 import _ from 'lodash';
 import ChartKeluhanComponent from './chart-keluhan';
 import Link from 'next/link';
+import { getAsramaGroup, getKeluhanGroup } from '@/lib/utils';
+import moment from 'moment-timezone';
+import ChartKeluhanLastMonth from './chart-keluhan-last-month';
+import ChartAsramaLastMonth from './chart-asrama-last-month';
 
 export const metadata: Metadata = {
     title: 'Dashboard',
@@ -16,60 +20,41 @@ export const metadata: Metadata = {
 
 async function page() {
     const session: any = await auth();
-    const masterCount = await db.master.count({
-        where: {
-            ...(session?.user?.type !== 'ALL' && { students: { sex: session?.user?.type } }),
-            returnAt: null,
-        },
-    });
-
     const userCount = await db.user.count();
-
     const master = await db.master.findMany({
         where: {
             ...(session?.user?.type !== 'ALL' && { students: { sex: session?.user?.type } }),
-            returnAt: null,
         },
         include: {
             keluhans: true,
             asrama: true,
         },
     });
-    const groupedByAsrama = _.groupBy(master, 'asramaId');
 
-    // Menghitung jumlah kemunculan setiap asramaId
-    const asramaCounts = _.reduce(
-        groupedByAsrama,
-        (result: any, value: any, key: any) => {
-            result.count.push(value.length);
-            result.categories.push(key);
-            return result;
-        },
-        { count: [], categories: [] }
-    );
+    const masterCountWithReturnNull = _.filter(master, (value) => value.returnAt === null).length;
+    const masterWithReturnNull = _.filter(master, (value) => value.returnAt === null);
 
-    const keluhanGrouped = _.chain(master)
-        .flatMap('keluhans')
-        .groupBy('name')
-        .map((value, key) => ({
-            name: key,
-            count: value.length,
-        }))
-        .value();
+    const now = moment().tz('Asia/Jakarta');
+    const firstDayOfLastMonth = now.clone().subtract(1, 'months').startOf('month').format('YYYY-MM-DD');
+    const lastDayOfLastMonth = now.clone().subtract(1, 'months').endOf('month').format('YYYY-MM-DD');
 
-    const keluhanCounts = _.reduce(
-        keluhanGrouped,
-        (result: any, value: any) => {
-            result.count.push(value.count);
-            result.categories.push(value.name);
-            return result;
-        },
-        { count: [], categories: [] }
-    );
+    const filteredDataLastMonth = _.filter(master, (item) => {
+        const itemDate = new Date(item.createdAt);
+        const firstDayDate = new Date(firstDayOfLastMonth);
+        const lastDayDate = new Date(lastDayOfLastMonth);
+        return itemDate >= firstDayDate && itemDate <= lastDayDate;
+    });
+
+    const asramaCounts = getAsramaGroup(masterWithReturnNull);
+    const asramaLastMonth = getAsramaGroup(filteredDataLastMonth);
+    const keluhanCounts = getKeluhanGroup(masterWithReturnNull);
+    const keluhanLastMonth = getKeluhanGroup(filteredDataLastMonth);
 
     const finalResult = {
         asrama: asramaCounts,
         keluhan: keluhanCounts,
+        lastMonth: keluhanLastMonth,
+        asramaLastMonth: asramaLastMonth,
     };
 
     return (
@@ -92,7 +77,7 @@ async function page() {
                         </div> */}
                     </div>
                     <div className="mt-5 flex items-center">
-                        <div className="text-3xl font-bold ltr:mr-3 rtl:ml-3"> {masterCount} </div>
+                        <div className="text-3xl font-bold ltr:mr-3 rtl:ml-3"> {masterCountWithReturnNull} </div>
                     </div>
                 </Link>
                 {/* Sessions */}
@@ -185,6 +170,8 @@ async function page() {
             <div className="mb-6 grid grid-cols-1 gap-6 text-white xl:grid-cols-2">
                 <ChartKeluhanComponent data={finalResult.keluhan} />
                 <ChartAsramaComponent data={finalResult.asrama} />
+                <ChartKeluhanLastMonth data={finalResult.lastMonth} />
+                <ChartAsramaLastMonth data={finalResult.asramaLastMonth} />
             </div>
             {/* <div className="panel mx-auto max-w-[550px] space-y-2 divide-y">
                 <div className="flex items-center justify-between">

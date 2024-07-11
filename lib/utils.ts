@@ -1,6 +1,6 @@
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
-
+import _ from "lodash"
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs))
 }
@@ -43,4 +43,47 @@ export function calculateDays(from: string, to: string): number {
     const numberOfDays: number = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
 
     return numberOfDays + 1;
+}
+
+export const getKeluhanGroup = (data: any) => {
+    const keluhanGrouped = _.chain(data)
+        .flatMap('keluhans')
+        .groupBy('name')
+        .map((value, key) => ({
+            name: key,
+            count: value.length,
+        }))
+        .value();
+
+    // console.log({ keluhanGrouped });
+
+
+    const keluhanCounts = _.reduce(
+        keluhanGrouped,
+        (result: any, value: any) => {
+            result.count.push(value.count);
+            result.categories.push(value.name);
+            return result;
+        },
+        { count: [], categories: [] }
+    );
+
+    return keluhanCounts
+}
+
+export const getAsramaGroup = (data: any) => {
+    const groupedByAsrama = _.groupBy(data, 'asramaId');
+
+    // Menghitung jumlah kemunculan setiap asramaId
+    const asramaCounts = _.reduce(
+        groupedByAsrama,
+        (result: any, value: any, key: any) => {
+            result.count.push(value.length);
+            result.categories.push(key);
+            return result;
+        },
+        { count: [], categories: [] }
+    );
+
+    return asramaCounts
 }

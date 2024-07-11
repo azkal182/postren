@@ -1,17 +1,24 @@
 'use client';
 import { getMasterByMonth } from '@/actions/master';
 import Dropdown from '@/components/dropdown';
-import { dateFormat } from '@/lib/utils';
-import React, { useState } from 'react';
+import { dateFormat, getAsramaGroup, getKeluhanGroup } from '@/lib/utils';
+import { IRootState } from '@/store';
+import React, { useEffect, useState } from 'react';
+import ReactApexChart from 'react-apexcharts';
+import { useSelector } from 'react-redux';
 
 var bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
 
 const ReportPageComponent = ({ type }: { type: any }) => {
+    const isDark = useSelector((state: IRootState) => state.themeConfig.theme === 'dark' || state.themeConfig.isDarkMode);
+    const isRtl = useSelector((state: IRootState) => state.themeConfig.rtlClass) === 'rtl';
     const [selectedMonth, setSelectedMonth] = useState<string>('');
     const [selectedYear, setSelectedYear] = useState<string>('');
     const [isLoading, setIsLoading] = useState(false);
     const [data, setData] = useState<any>(null);
-
+    const [keluahnGrouped, setKeluhanGrouped] = useState<any>({});
+    const [asramaGrouped, setAsramaGrouped] = useState<any>({});
+    const [isMounted, setIsMounted] = useState(false);
     const handleMonthChange = (event: any) => {
         setSelectedMonth(event.target.value);
     };
@@ -25,10 +32,149 @@ const ReportPageComponent = ({ type }: { type: any }) => {
         setIsLoading(true);
 
         getMasterByMonth(selectedMonth, selectedYear, type).then((data) => {
+            const keluhan = getKeluhanGroup(data);
+            const asrama = getAsramaGroup(data);
             setData(data);
+            setKeluhanGrouped(keluhan);
+            setAsramaGrouped(asrama);
             setIsLoading(false);
         });
     };
+
+    const keluhanColumn: any = {
+        series: [
+            {
+                name: 'SAKIT',
+                data: keluahnGrouped.count,
+            },
+        ],
+        options: {
+            chart: {
+                height: 300,
+                type: 'bar',
+                stacked: true,
+                zoom: {
+                    enabled: false,
+                },
+                toolbar: {
+                    show: false,
+                },
+            },
+            colors: ['#2196f3', '#3b3f5c'],
+            responsive: [
+                {
+                    breakpoint: 480,
+                    options: {
+                        legend: {
+                            position: 'bottom',
+                            offsetX: -10,
+                            offsetY: 5,
+                        },
+                    },
+                },
+            ],
+            plotOptions: {
+                bar: {
+                    horizontal: false,
+                },
+            },
+            xaxis: {
+                type: 'string',
+                categories: keluahnGrouped.categories,
+                axisBorder: {
+                    color: isDark ? '#191e3a' : '#e0e6ed',
+                },
+            },
+            yaxis: {
+                opposite: isRtl ? true : false,
+                labels: {
+                    offsetX: isRtl ? -20 : 0,
+                },
+            },
+            grid: {
+                borderColor: isDark ? '#191e3a' : '#e0e6ed',
+            },
+            legend: {
+                position: 'right',
+                offsetY: 40,
+            },
+            tooltip: {
+                theme: isDark ? 'dark' : 'light',
+            },
+            fill: {
+                opacity: 0.8,
+            },
+        },
+    };
+    const asramaColumn: any = {
+        series: [
+            {
+                name: 'SAKIT',
+                data: asramaGrouped.count,
+            },
+        ],
+        options: {
+            chart: {
+                height: 300,
+                type: 'bar',
+                stacked: true,
+                zoom: {
+                    enabled: false,
+                },
+                toolbar: {
+                    show: false,
+                },
+            },
+            colors: ['#2196f3', '#3b3f5c'],
+            responsive: [
+                {
+                    breakpoint: 480,
+                    options: {
+                        legend: {
+                            position: 'bottom',
+                            offsetX: -10,
+                            offsetY: 5,
+                        },
+                    },
+                },
+            ],
+            plotOptions: {
+                bar: {
+                    horizontal: false,
+                },
+            },
+            xaxis: {
+                type: 'string',
+                categories: asramaGrouped.categories,
+                axisBorder: {
+                    color: isDark ? '#191e3a' : '#e0e6ed',
+                },
+            },
+            yaxis: {
+                opposite: isRtl ? true : false,
+                labels: {
+                    offsetX: isRtl ? -20 : 0,
+                },
+            },
+            grid: {
+                borderColor: isDark ? '#191e3a' : '#e0e6ed',
+            },
+            legend: {
+                position: 'right',
+                offsetY: 40,
+            },
+            tooltip: {
+                theme: isDark ? 'dark' : 'light',
+            },
+            fill: {
+                opacity: 0.8,
+            },
+        },
+    };
+
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
 
     return (
         <div>
@@ -74,6 +220,39 @@ const ReportPageComponent = ({ type }: { type: any }) => {
                         <h1 className="text-center text-lg font-bold">
                             Laporan Bulan {bulan[Number(selectedMonth) - 1]} Tahun {selectedYear}
                         </h1>
+
+                        {setKeluhanGrouped.length > 0 && data.length > 0 && (
+                            <div className="mb-6 grid grid-cols-1 gap-6 text-white xl:grid-cols-2">
+                                <div>
+                                    <h1 className="text-center font-semibold text-dark dark:text-dark-light">Grafik sakit</h1>
+                                    <div className="">
+                                        {isMounted && (
+                                            <ReactApexChart
+                                                series={keluhanColumn.series}
+                                                options={keluhanColumn.options}
+                                                className="overflow-hidden rounded-lg bg-white dark:bg-black"
+                                                type="bar"
+                                                height={300}
+                                            />
+                                        )}
+                                    </div>
+                                </div>
+                                <div>
+                                    <h1 className="text-center font-semibold text-dark dark:text-dark-light">Grafik Asrama</h1>
+                                    <div className="">
+                                        {isMounted && (
+                                            <ReactApexChart
+                                                series={asramaColumn.series}
+                                                options={asramaColumn.options}
+                                                className="overflow-hidden rounded-lg bg-white dark:bg-black"
+                                                type="bar"
+                                                height={300}
+                                            />
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+                        )}
                         <div className="table-responsive mb-5 mt-6">
                             <table>
                                 <thead>
@@ -98,7 +277,7 @@ const ReportPageComponent = ({ type }: { type: any }) => {
                                             <td>{item.address.split(',')[0]}</td>
                                             <td>{item.asramaId}</td>
                                             <td>{item.kelasId}</td>
-                                            <td>{item.keluhans.join(', ')}</td>
+                                            <td>{item.keluhans.map((data: any) => data.name).join(', ')}</td>
                                             <td>{item.description}</td>
                                             <td>{item.room}</td>
                                         </tr>
