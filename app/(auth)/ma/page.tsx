@@ -7,9 +7,8 @@ import Table from './table';
 
 async function InapPage() {
     const session = await auth();
-    const type = session?.user?.type;
 
-    const data = await getInap('', type);
+    const data = await getInap('', 'LK');
     // // Fungsi untuk memeriksa apakah kelasId adalah angka Romawi
     // const isRomanNumeral = (str: string) => /^(I|V|X|L|C|D|M)+$/.test(str);
     // const filteredData = _.filter(data, (item) => isRomanNumeral(item.kelasId));
