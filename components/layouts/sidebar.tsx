@@ -205,6 +205,18 @@ const Sidebar = () => {
                                     )}
                                 </>
                             )}
+                            <li className="nav-item">
+                                <ul>
+                                    <li className="nav-item">
+                                        <Link href="/izin" className="group">
+                                            <div className="flex items-center">
+                                                <IconMenuDashboard className="shrink-0 group-hover:!text-primary" />
+                                                <span className="text-black dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">{t('izin')}</span>
+                                            </div>
+                                        </Link>
+                                    </li>
+                                </ul>
+                            </li>
                         </ul>
                     </PerfectScrollbar>
                 </div>
