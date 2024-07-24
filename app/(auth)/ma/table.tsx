@@ -31,7 +31,7 @@ const Table = ({ data, title }: { data: any; title: string }) => {
 
     return (
         <div>
-            <h2 className="mt-6 text-center text-lg font-bold">DAFTAR ANAK DI UKS {title} AMTSILATI</h2>
+            <h2 className="mt-6 text-center text-lg font-bold">DAFTAR ANAK {title} AMTSILATI DI UKS</h2>
             <div className="panel mx-5 mt-4">
                 <div className="table-responsive">
                     <table>
