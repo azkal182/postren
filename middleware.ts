@@ -10,22 +10,24 @@ const { auth } = NextAuth(authConfig);
 export default auth(async (req) => {
     const { nextUrl } = req;
     const session = await Session();
-    const role = session?.user?.role
+    const role = session?.user?.role;
 
-    const asramaRoute = nextUrl.pathname.startsWith('/data')
+    const asramaRoute = nextUrl.pathname.startsWith('/data');
     const isLoggedIn = !!req.auth;
     const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
+    const isPublicApiRoute = nextUrl.pathname.includes('/api/student');
     const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
     const isAuthRoute = authRoutes.includes(nextUrl.pathname);
 
-    if (isApiAuthRoute) {
+    console.log(nextUrl.pathname);
+    if (isApiAuthRoute || isPublicApiRoute) {
         return null;
     }
 
     if (isAuthRoute) {
         if (isLoggedIn) {
-            if (role === "ASRAMA") {
-                return Response.redirect(new URL("/data", nextUrl));
+            if (role === 'ASRAMA') {
+                return Response.redirect(new URL('/data', nextUrl));
             }
             return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
         }
@@ -36,8 +38,8 @@ export default auth(async (req) => {
         return Response.redirect(new URL('/login', nextUrl));
     }
 
-    if (role === "ASRAMA" && !asramaRoute) {
-        return Response.redirect(new URL("/data", nextUrl));
+    if (role === 'ASRAMA' && !asramaRoute) {
+        return Response.redirect(new URL('/data', nextUrl));
     }
 });
 
