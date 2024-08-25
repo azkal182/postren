@@ -1,9 +1,10 @@
 import { db } from '../../../../lib/db';
+import { NextResponse } from 'next/server';
 
 export async function GET(request: Request, { params }: { params: { id: string } }) {
     const id = params.id; // 'a', 'b', or 'c'
     if (!id) {
-        return Response.json({ error: 'field id required!' });
+        return NextResponse.json({ error: 'field id required!' });
     }
     const student = await db.master.findMany({
         where: {
@@ -14,5 +15,5 @@ export async function GET(request: Request, { params }: { params: { id: string }
         },
     });
 
-    return Response.json({ id, data: student });
+    return NextResponse.json({ id, data: student });
 }
