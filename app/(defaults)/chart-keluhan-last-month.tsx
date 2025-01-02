@@ -76,7 +76,10 @@ const ChartKeluhanLastMonth = ({ data }: { data: any }) => {
         },
     };
 
-    const month = new Date().getMonth() - 1;
+    let month = new Date().getMonth() - 1;
+    if (month < 0) {
+        month = 11;
+    }
 
     useEffect(() => {
         setIsMounted(true);
@@ -84,7 +87,7 @@ const ChartKeluhanLastMonth = ({ data }: { data: any }) => {
 
     return (
         <div className="panel">
-            <h1 className="text-center font-semibold text-dark dark:text-dark-light">Grafik SAKIT Bulan {bulan[month].toUpperCase()}</h1>
+            <h1 className="text-center font-semibold text-dark dark:text-dark-light">Grafik SAKIT Bulan {bulan[month]?.toUpperCase()}</h1>
             <div className="">
                 {isMounted && (
                     <ReactApexChart series={simpleColumnStacked.series} options={simpleColumnStacked.options} className="overflow-hidden rounded-lg bg-white dark:bg-black" type="bar" height={300} />
